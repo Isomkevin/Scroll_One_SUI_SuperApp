@@ -1,0 +1,157 @@
+import React from 'react';
+import { View, Text, StyleSheet, Share } from 'react-native';
+import { Stack } from 'expo-router';
+import { colors, spacing, typography, borderRadius } from '@/theme';
+import { Screen } from '@/components/layout/Screen';
+import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { useWalletStore } from '@/store/walletStore';
+import { Copy } from 'lucide-react-native';
+import * as Clipboard from 'expo-clipboard';
+import * as Haptics from 'expo-haptics';
+
+export default function ReceiveScreen() {
+  const { address } = useWalletStore();
+
+  const handleCopyAddress = async () => {
+    if (address) {
+      await Clipboard.setStringAsync(address);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      console.log('[ReceiveScreen] Address copied to clipboard');
+    }
+  };
+
+  const handleShare = async () => {
+    if (address) {
+      try {
+        await Share.share({
+          message: `Send assets to my Scroll address:\n${address}`,
+        });
+      } catch (error) {
+        console.error('[ReceiveScreen] Error sharing:', error);
+      }
+    }
+  };
+
+  return (
+    <>
+      <Stack.Screen 
+        options={{
+          headerShown: true,
+          title: 'Receive',
+          headerStyle: { backgroundColor: colors.background.primary },
+          headerTintColor: colors.text.primary,
+          headerLeft: () => null,
+        }}
+      />
+      <Screen>
+        <View style={styles.center}>
+          <Card variant="elevated" style={styles.qrCard}>
+            <View style={styles.qrPlaceholder}>
+              <Text style={styles.qrText}>QR Code</Text>
+              <Text style={styles.qrSubtext}>Scan to send</Text>
+            </View>
+          </Card>
+
+          <Text style={styles.addressLabel}>Your Scroll Address</Text>
+          <Card variant="glass" style={styles.addressCard}>
+            <Text style={styles.address} numberOfLines={1}>
+              {address || '0x...'}
+            </Text>
+          </Card>
+
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={handleCopyAddress}
+              variant="secondary"
+              fullWidth
+              icon={<Copy color={colors.text.primary} size={20} />}
+            >
+              Copy Address
+            </Button>
+
+            <Button
+              onPress={handleShare}
+              variant="outline"
+              fullWidth
+              style={styles.shareButton}
+            >
+              Share
+            </Button>
+          </View>
+
+          <Card variant="bordered" style={styles.infoCard}>
+            <Text style={styles.infoText}>
+              💡 Only send assets on the Scroll network to this address
+            </Text>
+          </Card>
+        </View>
+      </Screen>
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  center: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  qrCard: {
+    width: 280,
+    height: 280,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: spacing['2xl'],
+    marginBottom: spacing.xl,
+  },
+  qrPlaceholder: {
+    width: 240,
+    height: 240,
+    backgroundColor: colors.background.tertiary,
+    borderRadius: borderRadius.lg,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  qrText: {
+    fontSize: typography.fontSize['2xl'],
+    fontWeight: typography.fontWeight.bold,
+    color: colors.text.secondary,
+  },
+  qrSubtext: {
+    fontSize: typography.fontSize.sm,
+    color: colors.text.tertiary,
+    marginTop: spacing.xs,
+  },
+  addressLabel: {
+    fontSize: typography.fontSize.sm,
+    color: colors.text.secondary,
+    marginBottom: spacing.sm,
+  },
+  addressCard: {
+    width: '100%',
+    marginBottom: spacing.xl,
+  },
+  address: {
+    fontSize: typography.fontSize.base,
+    color: colors.text.primary,
+    fontFamily: typography.fontFamily.mono,
+    textAlign: 'center' as const,
+  },
+  buttonContainer: {
+    width: '100%',
+    gap: spacing.md,
+  },
+  shareButton: {
+    marginTop: 0,
+  },
+  infoCard: {
+    marginTop: spacing.xl,
+    width: '100%',
+  },
+  infoText: {
+    fontSize: typography.fontSize.sm,
+    color: colors.text.secondary,
+    textAlign: 'center' as const,
+    lineHeight: typography.lineHeight.relaxed * typography.fontSize.sm,
+  },
+});

@@ -1,0 +1,88 @@
+import { create } from 'zustand';
+
+export interface Asset {
+  symbol: string;
+  name: string;
+  balance: string;
+  usdValue: string;
+  change24h: number;
+  icon: string;
+}
+
+export interface Transaction {
+  id: string;
+  type: 'send' | 'receive' | 'swap' | 'contract';
+  amount: string;
+  symbol: string;
+  to?: string;
+  from?: string;
+  timestamp: number;
+  status: 'pending' | 'confirmed' | 'failed';
+  hash: string;
+  fee: string;
+}
+
+interface WalletState {
+  address: string | null;
+  isConnected: boolean;
+  balance: string;
+  assets: Asset[];
+  transactions: Transaction[];
+  isLoading: boolean;
+  error: string | null;
+  
+  setAddress: (address: string) => void;
+  setBalance: (balance: string) => void;
+  setAssets: (assets: Asset[]) => void;
+  setTransactions: (transactions: Transaction[]) => void;
+  addTransaction: (transaction: Transaction) => void;
+  setLoading: (isLoading: boolean) => void;
+  setError: (error: string | null) => void;
+  disconnect: () => void;
+  reset: () => void;
+}
+
+export const useWalletStore = create<WalletState>((set) => ({
+  address: null,
+  isConnected: false,
+  balance: '0.00',
+  assets: [],
+  transactions: [],
+  isLoading: false,
+  error: null,
+  
+  setAddress: (address) => set({ address, isConnected: true }),
+  
+  setBalance: (balance) => set({ balance }),
+  
+  setAssets: (assets) => set({ assets }),
+  
+  setTransactions: (transactions) => set({ transactions }),
+  
+  addTransaction: (transaction) => 
+    set((state) => ({ 
+      transactions: [transaction, ...state.transactions] 
+    })),
+  
+  setLoading: (isLoading) => set({ isLoading }),
+  
+  setError: (error) => set({ error }),
+  
+  disconnect: () => set({ 
+    address: null, 
+    isConnected: false,
+    balance: '0.00',
+    assets: [],
+    transactions: [],
+  }),
+  
+  reset: () => set({
+    address: null,
+    isConnected: false,
+    balance: '0.00',
+    assets: [],
+    transactions: [],
+    isLoading: false,
+    error: null,
+  }),
+}));
