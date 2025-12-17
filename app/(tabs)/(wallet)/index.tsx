@@ -10,7 +10,8 @@ import { useSettingsStore } from '@/store/settingsStore';
 import { shortenAddress } from '@/services/scroll/wallet';
 import { formatTransactionTime, fetchTransactions } from '@/services/scroll/transactions';
 import { scrollProvider } from '@/services/scroll/provider';
-import { getETHPrice } from '@/services/scroll/prices';
+import { getETHPrice, getTokenPrice } from '@/services/scroll/prices';
+import { getTokenBalances, getAvailableTokens, getTokenInfo } from '@/services/scroll/tokens';
 
 export default function WalletScreen() {
   const router = useRouter();
@@ -31,37 +32,89 @@ export default function WalletScreen() {
     setIsRefreshing(true);
     
     try {
-      // Fetch real ETH balance and price in parallel
+      // Get available tokens for current network
+      const availableTokens = getAvailableTokens(isTestnet);
+      
+      // Fetch ETH balance and price
       const [ethBalance, ethPriceData] = await Promise.all([
         scrollProvider.getBalance(address),
         getETHPrice(),
       ]);
       
-      const balanceNum = parseFloat(ethBalance);
+      const ethBalanceNum = parseFloat(ethBalance);
       const ethPrice = ethPriceData.price;
+      const ethUsdValue = ethBalanceNum * ethPrice;
       
-      const usdValue = (balanceNum * ethPrice).toLocaleString('en-US', { 
-        minimumFractionDigits: 2, 
-        maximumFractionDigits: 2 
+      // Fetch ERC-20 token balances
+      const tokenBalances = await getTokenBalances(address, availableTokens, isTestnet);
+      
+      // Fetch prices for all tokens in parallel
+      const pricePromises = ['ETH', ...availableTokens].map(async (symbol) => {
+        if (symbol === 'ETH') {
+          return { symbol, price: ethPriceData.price, change24h: ethPriceData.change24h };
+        }
+        const priceData = await getTokenPrice(symbol);
+        return { symbol, price: priceData.price, change24h: priceData.change24h };
       });
       
-      // Update total balance
-      setBalance(usdValue);
+      const prices = await Promise.all(pricePromises);
+      const priceMap = new Map(prices.map(p => [p.symbol, p]));
       
-      // Set assets with real ETH balance and price data
-      setAssets([
-        { 
-          symbol: 'ETH', 
-          name: 'Ethereum', 
-          balance: balanceNum.toFixed(4), 
-          usdValue: usdValue, 
-          change24h: ethPriceData.change24h,
-          icon: '⟠' 
-        },
-        // Note: ERC-20 tokens would need additional implementation
-        // { symbol: 'USDC', name: 'USD Coin', balance: '0.00', usdValue: '0.00', change24h: 0.0, icon: '💵' },
-        // { symbol: 'WBTC', name: 'Wrapped Bitcoin', balance: '0.00', usdValue: '0.00', change24h: 0.0, icon: '₿' },
-      ]);
+      // Build assets array
+      const assetsList: Asset[] = [];
+      
+      // Add ETH asset
+      assetsList.push({
+        symbol: 'ETH',
+        name: 'Ethereum',
+        balance: ethBalanceNum.toFixed(4),
+        usdValue: ethUsdValue.toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }),
+        change24h: ethPriceData.change24h,
+        icon: '⟠',
+      });
+      
+      // Add ERC-20 token assets
+      for (const symbol of availableTokens) {
+        const balance = tokenBalances.get(symbol) || '0.0';
+        const balanceNum = parseFloat(balance);
+        const tokenInfo = getTokenInfo(symbol, isTestnet);
+        const priceData = priceMap.get(symbol);
+        
+        // Only show tokens with non-zero balance or if we have price data
+        if (balanceNum > 0 || priceData) {
+          const price = priceData?.price || 0;
+          const usdValue = balanceNum * price;
+          
+          assetsList.push({
+            symbol: symbol,
+            name: tokenInfo?.name || symbol,
+            balance: balanceNum.toFixed(balanceNum >= 1 ? 2 : 6),
+            usdValue: usdValue.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }),
+            change24h: priceData?.change24h || 0,
+            icon: tokenInfo?.icon || '💱',
+          });
+        }
+      }
+      
+      // Calculate total USD value
+      const totalUsdValue = assetsList.reduce((sum, asset) => {
+        return sum + parseFloat(asset.usdValue.replace(/,/g, ''));
+      }, 0);
+      
+      // Update total balance
+      setBalance(totalUsdValue.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }));
+      
+      // Set assets
+      setAssets(assetsList);
 
       // Fetch real transactions
       const txList = await fetchTransactions(address);

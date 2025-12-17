@@ -190,14 +190,14 @@ export default function SendScreen() {
         <Card style={styles.card}>
           <Text style={styles.label}>Recipient Address</Text>
           <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="0x..."
-              placeholderTextColor={colors.text.tertiary}
-              value={recipient}
-              onChangeText={setRecipient}
-              autoCapitalize="none"
-            />
+          <TextInput
+            style={styles.input}
+            placeholder="0x..."
+            placeholderTextColor={colors.text.tertiary}
+            value={recipient}
+            onChangeText={setRecipient}
+            autoCapitalize="none"
+          />
             <TouchableOpacity
               style={styles.scanButton}
               onPress={handleOpenScanner}
@@ -292,7 +292,7 @@ export default function SendScreen() {
                   style={styles.closeScannerButton}
                 >
                   Close Scanner
-                </Button>
+        </Button>
               </View>
             </View>
           </Modal>
