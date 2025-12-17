@@ -1,42 +1,56 @@
 export const colors = {
+  /**
+   * Scroll.io inspired core palette
+   */
   background: {
-    primary: '#0A0A0A',
-    secondary: '#151515',
-    tertiary: '#1C1C1C',
-    elevated: '#222222',
+    // App background
+    primary: '#FAFAFA',
+    // Primary surface used for cards/containers
+    secondary: '#FFFFFF',
+    tertiary: '#FFFFFF',
+    elevated: '#FFFFFF',
+  },
+  surface: '#FFFFFF',
+  border: {
+    subtle: '#E5E7EB',
+    medium: '#E5E7EB',
+    strong: '#CBD5F5',
+    chrome: '#E5E7EB',
   },
   text: {
-    primary: '#FFFFFF',
-    secondary: '#A1A1A1',
-    tertiary: '#6B6B6B',
-    disabled: '#4A4A4A',
+    primary: '#0F172A',
+    secondary: '#475569',
+    tertiary: '#94A3B8',
+    muted: '#94A3B8',
+    disabled: '#CBD5E1',
   },
   accent: {
-    neonGreen: '#00FF88',
-    electricBlue: '#0066FF',
-    purple: '#9945FF',
-    cyan: '#00F0FF',
-  },
-  border: {
-    subtle: '#2A2A2A',
-    medium: '#3A3A3A',
-    strong: '#4A4A4A',
-    chrome: '#606060',
+    // Primary Scroll accent
+    primary: '#6E56CF',
+    secondary: '#4C3DF2',
+    // Backwards‑compatible aliases (avoid using directly in new code)
+    neonGreen: '#6E56CF',
+    electricBlue: '#4C3DF2',
+    purple: '#6E56CF',
+    cyan: '#4C3DF2',
   },
   status: {
-    success: '#00FF88',
-    warning: '#FFB800',
-    error: '#FF3366',
-    info: '#0066FF',
-  },
-  glass: {
-    background: 'rgba(30, 30, 30, 0.8)',
-    border: 'rgba(255, 255, 255, 0.1)',
+    success: '#16A34A',
+    warning: '#F59E0B',
+    error: '#DC2626',
+    info: '#4C3DF2',
   },
   overlay: {
-    light: 'rgba(0, 0, 0, 0.3)',
-    medium: 'rgba(0, 0, 0, 0.6)',
-    heavy: 'rgba(0, 0, 0, 0.9)',
+    soft: 'rgba(15,23,42,0.04)',
+    light: 'rgba(15,23,42,0.08)',
+    medium: 'rgba(15,23,42,0.12)',
+  },
+  /**
+   * Kept for legacy "glass" variants, but tuned down
+   */
+  glass: {
+    background: 'rgba(255,255,255,0.9)',
+    border: 'rgba(148,163,184,0.35)',
   },
 } as const;
 

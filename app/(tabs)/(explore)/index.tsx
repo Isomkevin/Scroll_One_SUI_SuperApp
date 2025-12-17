@@ -57,10 +57,6 @@ export default function ExploreScreen() {
   const hasMore = filteredApps.length < MINIAPPS.length;
 
   const handleCategoryChange = (category: string | null) => {
-    if (Platform.OS !== 'web') {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    }
-    
     Animated.sequence([
       Animated.timing(fadeAnim, {
         toValue: 0.3,
@@ -79,9 +75,6 @@ export default function ExploreScreen() {
   };
 
   const handleViewModeToggle = () => {
-    if (Platform.OS !== 'web') {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    }
     toggleViewMode();
   };
 
@@ -103,7 +96,7 @@ export default function ExploreScreen() {
     if (!loadingMore) return null;
     return (
       <View style={styles.footer}>
-        <ActivityIndicator size="small" color={colors.accent.neonGreen} />
+        <ActivityIndicator size="small" color={colors.accent.primary} />
       </View>
     );
   };
@@ -165,7 +158,7 @@ export default function ExploreScreen() {
         >
           <Animated.View style={{ opacity: fadeAnim }}>
             {featuredApps.length > 0 && !searchQuery && !selectedCategory && (
-              <View style={styles.section}>
+          <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Featured</Text>
                 {viewMode === 'list' ? (
                   <View>
@@ -235,8 +228,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   title: {
-    fontSize: typography.fontSize['3xl'],
-    fontWeight: typography.fontWeight.bold,
+    fontSize: typography.fontSize['2xl'],
+    fontWeight: typography.fontWeight.semibold,
     color: colors.text.primary,
     marginBottom: spacing.xs,
   },
@@ -277,7 +270,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: typography.fontSize.lg,
-    fontWeight: typography.fontWeight.bold,
+    fontWeight: typography.fontWeight.semibold,
     color: colors.text.primary,
     marginBottom: spacing.md,
     marginTop: spacing.md,

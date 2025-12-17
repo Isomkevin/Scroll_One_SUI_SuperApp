@@ -30,19 +30,15 @@ export function CategoryTabs({
   useEffect(() => {
     const selected = selectedCategory || 'All';
     Object.keys(scaleAnims).forEach((cat) => {
-      Animated.spring(scaleAnims[cat], {
-        toValue: cat === selected ? 1.05 : 1,
+      Animated.timing(scaleAnims[cat], {
+        toValue: cat === selected ? 1.02 : 1,
+        duration: 160,
         useNativeDriver: true,
-        friction: 8,
-        tension: 100,
       }).start();
     });
   }, [selectedCategory, scaleAnims]);
 
   const handlePress = (category: string) => {
-    if (Platform.OS !== 'web') {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    }
     onSelectCategory(category === 'All' ? null : category);
   };
 
@@ -105,7 +101,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   tabActive: {
-    backgroundColor: 'rgba(0, 255, 136, 0.1)',
+    backgroundColor: 'rgba(110, 86, 207, 0.1)',
   },
   tabText: {
     fontSize: typography.fontSize.sm,
@@ -113,8 +109,8 @@ const styles = StyleSheet.create({
     fontWeight: typography.fontWeight.medium,
   },
   tabTextActive: {
-    color: colors.accent.neonGreen,
-    fontWeight: typography.fontWeight.bold,
+    color: colors.accent.primary,
+    fontWeight: typography.fontWeight.semibold,
   },
   underline: {
     position: 'absolute' as const,
@@ -122,7 +118,7 @@ const styles = StyleSheet.create({
     left: spacing.sm,
     right: spacing.sm,
     height: 2,
-    backgroundColor: colors.accent.neonGreen,
+    backgroundColor: colors.accent.primary,
     borderRadius: 1,
   },
 });

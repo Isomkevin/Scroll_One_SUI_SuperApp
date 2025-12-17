@@ -198,7 +198,7 @@ export default function TransactionDetailScreen() {
             style={styles.explorerButton}
             onPress={handleViewOnExplorer}
           >
-            <ExternalLink color={colors.accent.neonGreen} size={20} />
+            <ExternalLink color={colors.accent.primary} size={20} />
             <Text style={styles.explorerButtonText}>View on ScrollScan</Text>
           </TouchableOpacity>
         </View>
@@ -231,13 +231,13 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: typography.fontSize.xl,
-    fontWeight: typography.fontWeight.bold,
+    fontWeight: typography.fontWeight.semibold,
     color: colors.text.primary,
     marginBottom: spacing.sm,
   },
   amount: {
-    fontSize: typography.fontSize['3xl'],
-    fontWeight: typography.fontWeight.bold,
+    fontSize: typography.fontSize['2xl'],
+    fontWeight: typography.fontWeight.semibold,
     color: colors.text.primary,
     marginBottom: spacing.xs,
   },
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.background.elevated,
+    backgroundColor: colors.surface,
     borderRadius: borderRadius.lg,
     padding: spacing.md,
     gap: spacing.sm,
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
   },
   explorerButtonText: {
     fontSize: typography.fontSize.base,
-    color: colors.accent.neonGreen,
+    color: colors.accent.primary,
     fontWeight: typography.fontWeight.semibold,
   },
 });

@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: borderRadius.lg,
+    borderRadius: borderRadius.md,
     overflow: 'hidden',
   },
   content: {
@@ -103,25 +103,23 @@ const styles = StyleSheet.create({
     marginRight: spacing.sm,
   },
   primary: {
-    backgroundColor: colors.accent.neonGreen,
-    ...shadows.md,
+    backgroundColor: colors.accent.primary,
   },
   secondary: {
-    backgroundColor: colors.background.elevated,
+    backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: colors.border.medium,
+    borderColor: colors.border.subtle,
   },
   outline: {
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: colors.border.chrome,
+    borderColor: colors.border.medium,
   },
   ghost: {
     backgroundColor: 'transparent',
   },
   danger: {
     backgroundColor: colors.status.error,
-    ...shadows.md,
   },
   sm: {
     paddingHorizontal: spacing.base,
@@ -145,6 +143,7 @@ const styles = StyleSheet.create({
     opacity: 0.4,
   },
   text: {
+    fontFamily: typography.fontFamily.medium,
     fontWeight: typography.fontWeight.semibold,
     textAlign: 'center' as const,
   },
@@ -158,7 +157,7 @@ const styles = StyleSheet.create({
     fontSize: typography.fontSize.lg,
   },
   primaryText: {
-    color: colors.background.primary,
+    color: colors.surface,
   },
   secondaryText: {
     color: colors.text.primary,

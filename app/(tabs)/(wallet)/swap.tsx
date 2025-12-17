@@ -49,7 +49,7 @@ export default function SwapScreen() {
 
         <View style={styles.swapIconContainer}>
           <TouchableOpacity style={styles.swapIcon}>
-            <ArrowDownUp color={colors.accent.neonGreen} size={20} />
+            <ArrowDownUp color={colors.accent.primary} size={20} />
           </TouchableOpacity>
         </View>
 
@@ -70,7 +70,7 @@ export default function SwapScreen() {
           <Text style={styles.balance}>≈ $0.00</Text>
         </Card>
 
-        <Card variant="glass" style={styles.rateCard}>
+        <Card variant="bordered" style={styles.rateCard}>
           <View style={styles.rateRow}>
             <Text style={styles.rateLabel}>Exchange Rate</Text>
             <Text style={styles.rateValue}>1 {fromAsset} = 2,500 {toAsset}</Text>
@@ -110,15 +110,15 @@ const styles = StyleSheet.create({
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.background.tertiary,
+    backgroundColor: colors.surface,
     borderRadius: borderRadius.md,
     padding: spacing.md,
   },
   input: {
     flex: 1,
-    fontSize: typography.fontSize['2xl'],
+    fontSize: typography.fontSize.xl,
     color: colors.text.primary,
-    fontWeight: typography.fontWeight.bold,
+    fontWeight: typography.fontWeight.semibold,
   },
   asset: {
     fontSize: typography.fontSize.lg,

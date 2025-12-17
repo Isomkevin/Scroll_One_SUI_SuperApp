@@ -24,9 +24,9 @@ export function MiniAppListCard({ app, onPress }: MiniAppListCardProps) {
           <Text style={styles.name}>{app.name}</Text>
           {app.verified && (
             <Shield
-              color={colors.accent.electricBlue}
+              color={colors.accent.secondary}
               size={16}
-              fill={colors.accent.electricBlue}
+              fill={colors.accent.secondary}
             />
           )}
         </View>
@@ -38,9 +38,9 @@ export function MiniAppListCard({ app, onPress }: MiniAppListCardProps) {
           {app.featured && (
             <View style={styles.featuredBadge}>
               <Star
-                color={colors.accent.neonGreen}
+                color={colors.accent.primary}
                 size={12}
-                fill={colors.accent.neonGreen}
+                fill={colors.accent.primary}
               />
               <Text style={styles.featuredText}>Featured</Text>
             </View>
@@ -55,16 +55,17 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     padding: spacing.base,
-    backgroundColor: colors.background.elevated,
+    backgroundColor: colors.surface,
     borderRadius: borderRadius.lg,
     marginBottom: spacing.md,
-    ...shadows.md,
+    borderWidth: 1,
+    borderColor: colors.border.subtle,
   },
   iconContainer: {
     width: 60,
     height: 60,
     borderRadius: borderRadius.md,
-    backgroundColor: colors.background.tertiary,
+    backgroundColor: colors.background.primary,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: spacing.md,
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: typography.fontSize.base,
-    fontWeight: typography.fontWeight.bold,
+    fontWeight: typography.fontWeight.semibold,
     color: colors.text.primary,
     marginRight: spacing.xs,
   },
@@ -104,14 +105,14 @@ const styles = StyleSheet.create({
   featuredBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 255, 136, 0.1)',
+    backgroundColor: 'rgba(110, 86, 207, 0.08)',
     paddingHorizontal: spacing.sm,
     paddingVertical: 2,
     borderRadius: borderRadius.xs,
   },
   featuredText: {
     fontSize: typography.fontSize.xs,
-    color: colors.accent.neonGreen,
+    color: colors.accent.primary,
     marginLeft: 4,
     fontWeight: typography.fontWeight.medium,
   },

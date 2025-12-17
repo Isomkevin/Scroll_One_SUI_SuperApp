@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: typography.fontSize['2xl'],
-    fontWeight: typography.fontWeight.bold,
+    fontSize: typography.fontSize.xl,
+    fontWeight: typography.fontWeight.semibold,
     color: colors.text.primary,
   },
   subtitle: {

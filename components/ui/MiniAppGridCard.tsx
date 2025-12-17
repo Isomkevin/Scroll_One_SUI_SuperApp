@@ -24,9 +24,9 @@ export function MiniAppGridCard({ app, onPress }: MiniAppGridCardProps) {
         {app.verified && (
           <View style={styles.verifiedBadge}>
             <Shield
-              color={colors.accent.electricBlue}
+              color={colors.accent.secondary}
               size={12}
-              fill={colors.accent.electricBlue}
+              fill={colors.accent.secondary}
             />
           </View>
         )}
@@ -40,9 +40,9 @@ export function MiniAppGridCard({ app, onPress }: MiniAppGridCardProps) {
       {app.featured && (
         <View style={styles.featuredBadge}>
           <Star
-            color={colors.accent.neonGreen}
+            color={colors.accent.primary}
             size={10}
-            fill={colors.accent.neonGreen}
+            fill={colors.accent.primary}
           />
         </View>
       )}
@@ -54,17 +54,18 @@ const styles = StyleSheet.create({
   card: {
     width: cardWidth,
     padding: spacing.md,
-    backgroundColor: colors.background.elevated,
+    backgroundColor: colors.surface,
     borderRadius: borderRadius.lg,
     alignItems: 'center',
     marginBottom: spacing.md,
-    ...shadows.md,
+    borderWidth: 1,
+    borderColor: colors.border.subtle,
   },
   iconContainer: {
     width: 56,
     height: 56,
     borderRadius: borderRadius.md,
-    backgroundColor: colors.background.tertiary,
+    backgroundColor: colors.background.primary,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: spacing.sm,
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: typography.fontSize.sm,
-    fontWeight: typography.fontWeight.bold,
+    fontWeight: typography.fontWeight.semibold,
     color: colors.text.primary,
     textAlign: 'center',
     marginBottom: spacing.xs,
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
     position: 'absolute' as const,
     top: spacing.sm,
     right: spacing.sm,
-    backgroundColor: 'rgba(0, 255, 136, 0.2)',
+    backgroundColor: 'rgba(110, 86, 207, 0.08)',
     borderRadius: 12,
     padding: 4,
   },

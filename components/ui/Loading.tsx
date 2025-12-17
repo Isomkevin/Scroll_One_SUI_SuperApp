@@ -12,7 +12,7 @@ interface LoadingProps {
 export function Loading({
   message,
   size = 'large',
-  color = colors.accent.neonGreen,
+  color = colors.accent.primary,
   fullScreen = false,
 }: LoadingProps) {
   const containerStyles = [

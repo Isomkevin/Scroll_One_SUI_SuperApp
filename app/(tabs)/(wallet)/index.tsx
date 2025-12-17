@@ -158,9 +158,9 @@ export default function WalletScreen() {
         item.type === 'receive' ? styles.receiveIcon : styles.sendIcon
       ]}>
         {item.type === 'receive' ? (
-          <ArrowDownToLine color={colors.accent.neonGreen} size={20} />
+          <ArrowDownToLine color={colors.accent.primary} size={20} />
         ) : (
-          <Send color={colors.accent.electricBlue} size={20} />
+          <Send color={colors.accent.secondary} size={20} />
         )}
       </View>
       <View style={styles.transactionMiddle}>
@@ -198,7 +198,7 @@ export default function WalletScreen() {
               </TouchableOpacity>
             </View>
             
-            <Card variant="glass" style={styles.balanceCard}>
+            <Card variant="elevated" style={styles.balanceCard}>
               <Text style={styles.balanceLabel}>Total Balance</Text>
               <Text style={styles.balance}>${balance}</Text>
               {address && (
@@ -212,7 +212,7 @@ export default function WalletScreen() {
                 onPress={() => router.push('/(tabs)/(wallet)/send')}
               >
                 <View style={styles.actionIcon}>
-                  <Send color={colors.accent.neonGreen} size={22} />
+                  <Send color={colors.accent.primary} size={22} />
                 </View>
                 <Text style={styles.actionText}>Send</Text>
               </TouchableOpacity>
@@ -222,7 +222,7 @@ export default function WalletScreen() {
                 onPress={() => router.push('/(tabs)/(wallet)/receive')}
               >
                 <View style={styles.actionIcon}>
-                  <ArrowDownToLine color={colors.accent.neonGreen} size={22} />
+                  <ArrowDownToLine color={colors.accent.primary} size={22} />
                 </View>
                 <Text style={styles.actionText}>Receive</Text>
               </TouchableOpacity>
@@ -232,7 +232,7 @@ export default function WalletScreen() {
                 onPress={() => router.push('/(tabs)/(wallet)/swap')}
               >
                 <View style={styles.actionIcon}>
-                  <ArrowLeftRight color={colors.accent.neonGreen} size={22} />
+                  <ArrowLeftRight color={colors.accent.primary} size={22} />
                 </View>
                 <Text style={styles.actionText}>Swap</Text>
               </TouchableOpacity>
@@ -244,7 +244,7 @@ export default function WalletScreen() {
               <Text style={styles.sectionTitle}>Assets</Text>
               {isRefreshing && assets.length === 0 ? (
                 <View style={styles.loadingContainer}>
-                  <ActivityIndicator size="small" color={colors.accent.neonGreen} />
+                  <ActivityIndicator size="small" color={colors.accent.primary} />
                 </View>
               ) : assets.length > 0 ? (
                 assets.map((item) => (
@@ -259,7 +259,7 @@ export default function WalletScreen() {
               <Text style={styles.sectionTitle}>Recent Activity</Text>
               {isRefreshing && transactions.length === 0 ? (
                 <View style={styles.loadingContainer}>
-                  <ActivityIndicator size="small" color={colors.accent.neonGreen} />
+                  <ActivityIndicator size="small" color={colors.accent.primary} />
                 </View>
               ) : transactions.length > 0 ? (
                 transactions.map((item) => (
@@ -299,8 +299,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
   balance: {
-    fontSize: typography.fontSize['4xl'],
-    fontWeight: typography.fontWeight.bold,
+    fontSize: typography.fontSize['3xl'],
+    fontWeight: typography.fontWeight.semibold,
     color: colors.text.primary,
     marginBottom: spacing.sm,
   },
@@ -320,11 +320,11 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: borderRadius.full,
-    backgroundColor: colors.background.elevated,
+    backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: spacing.sm,
-    ...shadows.md,
+    ...shadows.sm,
   },
   actionText: {
     fontSize: typography.fontSize.sm,
@@ -416,10 +416,10 @@ const styles = StyleSheet.create({
     marginRight: spacing.md,
   },
   receiveIcon: {
-    backgroundColor: 'rgba(0, 255, 136, 0.1)',
+    backgroundColor: 'rgba(110, 86, 207, 0.08)',
   },
   sendIcon: {
-    backgroundColor: 'rgba(0, 102, 255, 0.1)',
+    backgroundColor: 'rgba(76, 61, 242, 0.08)',
   },
   transactionMiddle: {
     flex: 1,

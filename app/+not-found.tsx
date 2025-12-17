@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   },
   linkText: {
     fontSize: typography.fontSize.base,
-    color: colors.accent.neonGreen,
+    color: colors.accent.primary,
     fontWeight: typography.fontWeight.semibold,
   },
 });

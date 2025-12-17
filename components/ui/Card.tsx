@@ -34,10 +34,11 @@ export function Card({
 const styles = StyleSheet.create({
   card: {
     borderRadius: borderRadius.lg,
-    overflow: 'hidden',
   },
   default: {
-    backgroundColor: colors.background.secondary,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border.subtle,
   },
   glass: {
     backgroundColor: colors.glass.background,
@@ -45,11 +46,13 @@ const styles = StyleSheet.create({
     borderColor: colors.glass.border,
   },
   elevated: {
-    backgroundColor: colors.background.elevated,
-    ...shadows.lg,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border.subtle,
+    ...shadows.sm,
   },
   bordered: {
-    backgroundColor: colors.background.secondary,
+    backgroundColor: colors.surface,
     borderWidth: 1,
     borderColor: colors.border.medium,
   },

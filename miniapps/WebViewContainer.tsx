@@ -87,7 +87,7 @@ export function WebViewContainer({ app, onError }: WebViewContainerProps) {
     <View style={styles.container}>
       {isLoading && (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={colors.accent.neonGreen} />
+          <ActivityIndicator size="large" color={colors.accent.primary} />
           <Text style={styles.loadingText}>Loading {app.name}...</Text>
         </View>
       )}

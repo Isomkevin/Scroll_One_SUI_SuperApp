@@ -203,7 +203,7 @@ export default function SendScreen() {
               onPress={handleOpenScanner}
               activeOpacity={0.7}
             >
-              <QrCode color={colors.accent.neonGreen} size={24} />
+              <QrCode color={colors.accent.primary} size={24} />
             </TouchableOpacity>
           </View>
         </Card>
@@ -224,7 +224,7 @@ export default function SendScreen() {
           <Text style={styles.usdValue}>≈ ${usdValue}</Text>
         </Card>
 
-        <Card variant="glass" style={styles.feeCard}>
+        <Card variant="bordered" style={styles.feeCard}>
           <View style={styles.feeRow}>
             <Text style={styles.feeLabel}>Network Fee</Text>
             {isEstimatingFee ? (
@@ -271,7 +271,7 @@ export default function SendScreen() {
         {showScanner && permission?.granted && (
           <Modal
             visible={showScanner}
-            animationType="slide"
+            animationType="fade"
             onRequestClose={() => setShowScanner(false)}
           >
             <View style={styles.scannerContainer}>
@@ -316,7 +316,9 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   input: {
-    backgroundColor: colors.background.tertiary,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border.subtle,
     borderRadius: borderRadius.md,
     padding: spacing.md,
     paddingRight: 60,
@@ -336,15 +338,15 @@ const styles = StyleSheet.create({
   amountContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.background.tertiary,
+    backgroundColor: colors.surface,
     borderRadius: borderRadius.md,
     padding: spacing.md,
   },
   amountInput: {
     flex: 1,
-    fontSize: typography.fontSize['2xl'],
+    fontSize: typography.fontSize.xl,
     color: colors.text.primary,
-    fontWeight: typography.fontWeight.bold,
+    fontWeight: typography.fontWeight.semibold,
   },
   assetLabel: {
     fontSize: typography.fontSize.lg,
@@ -388,11 +390,11 @@ const styles = StyleSheet.create({
   },
   sendButtonText: {
     fontSize: typography.fontSize.base,
-    fontWeight: typography.fontWeight.semibold,
+    fontWeight: typography.fontWeight.medium,
   },
   errorCard: {
     marginBottom: spacing.base,
-    backgroundColor: 'rgba(255, 59, 48, 0.1)',
+    backgroundColor: 'rgba(220, 38, 38, 0.04)',
   },
   errorText: {
     fontSize: typography.fontSize.sm,
@@ -420,13 +422,13 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: colors.overlay.light,
   },
   scannerFrame: {
     width: 250,
     height: 250,
     borderWidth: 3,
-    borderColor: colors.accent.neonGreen,
+    borderColor: colors.accent.primary,
     borderRadius: borderRadius.lg,
     backgroundColor: 'transparent',
   },
@@ -434,7 +436,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.xl,
     color: colors.text.primary,
     fontSize: typography.fontSize.base,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: 'rgba(15,23,42,0.7)',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     borderRadius: borderRadius.md,

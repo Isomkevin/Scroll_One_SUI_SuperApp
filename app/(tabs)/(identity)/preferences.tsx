@@ -60,7 +60,7 @@ export default function PreferencesScreen() {
           },
           headerTintColor: colors.text.primary,
           headerTitleStyle: {
-            fontWeight: typography.fontWeight.bold,
+            fontWeight: typography.fontWeight.semibold,
           },
           headerLeft: () => (
             <TouchableOpacity
@@ -79,7 +79,7 @@ export default function PreferencesScreen() {
             <Card style={styles.settingCard}>
               <View style={styles.settingRow}>
                 <View style={styles.settingLeft}>
-                  <Network color={colors.accent.electricBlue} size={24} />
+                  <Network color={colors.accent.secondary} size={24} />
                   <View style={styles.settingTextContainer}>
                     <Text style={styles.settingTitle}>Network</Text>
                     <Text style={styles.settingDescription}>
@@ -93,9 +93,9 @@ export default function PreferencesScreen() {
                     onValueChange={handleNetworkToggle}
                     trackColor={{
                       false: colors.border.medium,
-                      true: colors.accent.neonGreen + '80',
+                      true: colors.accent.primary + '80',
                     }}
-                    thumbColor={isTestnet ? colors.accent.neonGreen : colors.text.tertiary}
+                    thumbColor={isTestnet ? colors.accent.primary : colors.text.tertiary}
                     ios_backgroundColor={colors.border.medium}
                   />
                 )}
