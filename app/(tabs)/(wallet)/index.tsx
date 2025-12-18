@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
-import { Wallet, Send, ArrowDownToLine, ArrowLeftRight, ExternalLink } from 'lucide-react-native';
+import { Wallet, Send, ArrowDownToLine, ArrowLeftRight, ExternalLink, ChevronDown, ChevronUp, Banknote } from 'lucide-react-native';
 import { colors, spacing, typography, borderRadius, shadows } from '@/theme';
 import { Screen } from '@/components/layout/Screen';
 import { Card } from '@/components/ui/Card';
@@ -18,6 +18,7 @@ export default function WalletScreen() {
   const { address, balance, assets, transactions, setAssets, setTransactions, setBalance, setLoading } = useWalletStore();
   const { isTestnet } = useSettingsStore();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [assetsExpanded, setAssetsExpanded] = useState(true);
 
   useEffect(() => {
     if (address) {
@@ -229,6 +230,16 @@ export default function WalletScreen() {
 
               <TouchableOpacity 
                 style={styles.actionButton}
+                onPress={() => router.push('/(tabs)/(wallet)/deposit')}
+              >
+                <View style={styles.actionIcon}>
+                  <Banknote color={colors.accent.primary} size={22} />
+                </View>
+                <Text style={styles.actionText}>Deposit</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.actionButton}
                 onPress={() => router.push('/(tabs)/(wallet)/swap')}
               >
                 <View style={styles.actionIcon}>
@@ -241,17 +252,38 @@ export default function WalletScreen() {
 
           <View style={styles.content}>
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Assets</Text>
-              {isRefreshing && assets.length === 0 ? (
-                <View style={styles.loadingContainer}>
-                  <ActivityIndicator size="small" color={colors.accent.primary} />
-                </View>
-              ) : assets.length > 0 ? (
-                assets.map((item) => (
-                  <View key={item.symbol}>{renderAsset({ item })}</View>
-                ))
-              ) : (
-                <Text style={styles.emptyText}>No assets found</Text>
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionTitle}>Assets</Text>
+                <TouchableOpacity
+                  onPress={() => setAssetsExpanded((prev) => !prev)}
+                  style={styles.sectionToggle}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.sectionToggleText}>
+                    {assetsExpanded ? 'Hide' : 'Show'}
+                  </Text>
+                  {assetsExpanded ? (
+                    <ChevronUp color={colors.text.secondary} size={16} />
+                  ) : (
+                    <ChevronDown color={colors.text.secondary} size={16} />
+                  )}
+                </TouchableOpacity>
+              </View>
+
+              {assetsExpanded && (
+                <>
+                  {isRefreshing && assets.length === 0 ? (
+                    <View style={styles.loadingContainer}>
+                      <ActivityIndicator size="small" color={colors.accent.primary} />
+                    </View>
+                  ) : assets.length > 0 ? (
+                    assets.map((item) => (
+                      <View key={item.symbol}>{renderAsset({ item })}</View>
+                    ))
+                  ) : (
+                    <Text style={styles.emptyText}>No assets found</Text>
+                  )}
+                </>
               )}
             </View>
 

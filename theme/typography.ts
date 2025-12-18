@@ -1,11 +1,11 @@
 export const typography = {
   fontFamily: {
-    // Use Inter across the app; platform font mapping handled by Expo config/assets
-    regular: 'Inter',
-    medium: 'Inter',
-    semibold: 'Inter',
+    // Use Inter across the app; mapped via @expo-google-fonts/inter
+    regular: 'Inter_400Regular',
+    medium: 'Inter_500Medium',
+    semibold: 'Inter_600SemiBold',
     // Prefer medium/semibold over heavy bold; keep for legacy usage
-    bold: 'Inter',
+    bold: 'Inter_600SemiBold',
     mono: 'Courier',
   },
   fontSize: {

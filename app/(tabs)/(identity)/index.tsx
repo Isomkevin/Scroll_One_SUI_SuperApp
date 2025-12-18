@@ -71,7 +71,7 @@ export default function IdentityScreen() {
             <Card style={styles.menuCard}>
               <TouchableOpacity style={styles.menuItem}>
                 <View style={styles.menuLeft}>
-                  <Shield color={colors.accent.electricBlue} size={20} />
+                  <Shield color={colors.accent.secondary} size={20} />
                   <Text style={styles.menuText}>Privacy & Security</Text>
                 </View>
               </TouchableOpacity>

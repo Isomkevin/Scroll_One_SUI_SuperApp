@@ -6,8 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Animated,
-  LayoutAnimation,
-  Platform,
 } from 'react-native';
 import { colors, spacing, typography, borderRadius } from '@/theme';
 

@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as SystemUI from 'expo-system-ui';
+import { useFonts, Inter_400Regular, Inter_500Medium, Inter_600SemiBold } from '@expo-google-fonts/inter';
 import { colors } from '@/theme';
 import { useAppInitialization } from '@/hooks/useAppInitialization';
 
@@ -36,10 +37,23 @@ function RootLayoutNav() {
 }
 
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+  });
+
   useEffect(() => {
-    SystemUI.setBackgroundColorAsync(colors.background.primary);
-    SplashScreen.hideAsync();
-  }, []);
+    if (fontsLoaded) {
+      SystemUI.setBackgroundColorAsync(colors.background.primary);
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    // Keep splash screen visible while fonts load
+    return null;
+  }
 
   return (
     <QueryClientProvider client={queryClient}>

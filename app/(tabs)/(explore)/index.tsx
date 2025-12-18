@@ -7,7 +7,6 @@ import {
   TextInput,
   ActivityIndicator,
   Animated,
-  LayoutAnimation,
   Platform,
   ScrollView,
 } from 'react-native';
