@@ -1,0 +1,27 @@
+{
+  "name": "Scroll One SuperApp",
+  "short_name": "Scroll One",
+  "description": "Your Gateway to the Scroll Ecosystem",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFF8F3",
+  "theme_color": "#6E56CF",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "productivity", "utilities"],
+  "lang": "en-US",
+  "dir": "ltr"
+}
+

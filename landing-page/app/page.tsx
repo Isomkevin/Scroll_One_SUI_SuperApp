@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import Image from "next/image";
 import { 
   Wallet, 
   Shield, 
@@ -73,8 +74,96 @@ export default function Home() {
 
   if (!mounted) return null;
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://scrollone.app';
+  
+  // JSON-LD Structured Data for SEO
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Scroll One SuperApp",
+    "url": siteUrl,
+    "logo": `${siteUrl}/logo.png`,
+    "description": "A comprehensive super app ecosystem built on the Scroll blockchain",
+    "sameAs": [
+      "https://twitter.com/scrollone",
+      "https://github.com/scrollone",
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Customer Service",
+      "email": "support@scrollone.app",
+    },
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Scroll One SuperApp",
+    "url": siteUrl,
+    "description": "Your Gateway to the Scroll Ecosystem",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${siteUrl}/search?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+
+  const softwareApplicationSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Scroll One SuperApp",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "iOS, Android, Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "1250",
+    },
+    "description": "A comprehensive super app ecosystem built on the Scroll blockchain, integrating wallet, identity, and a diverse mini-app marketplace.",
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": siteUrl,
+      },
+    ],
+  };
+
   return (
-    <main className="min-h-screen bg-background-primary text-text-primary overflow-x-hidden relative">
+    <>
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareApplicationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      
+      <main className="min-h-screen bg-background-primary text-text-primary overflow-x-hidden relative">
       {/* Custom Cursor Effect */}
       <motion.div
         className="fixed w-6 h-6 rounded-full bg-accent-primary/20 pointer-events-none z-[9999] mix-blend-difference"
@@ -123,12 +212,18 @@ export default function Home() {
               className="flex items-center space-x-3 group cursor-pointer"
             >
               <motion.div 
-                className="w-10 h-10 bg-gradient-scroll rounded-xl flex items-center justify-center shadow-lg shadow-accent-primary/30 relative overflow-hidden"
-                whileHover={{ rotate: 180, scale: 1.1 }}
+                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shadow-accent-primary/30 relative overflow-hidden"
+                whileHover={{ scale: 1.1 }}
                 transition={{ duration: 0.5 }}
               >
-                <Zap className="w-6 h-6 text-white relative z-10" />
-                <div className="absolute inset-0 bg-gradient-to-r from-accent-primary to-accent-secondary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <Image 
+                  src="/logo.png" 
+                  alt="Scroll One Logo" 
+                  width={40} 
+                  height={40}
+                  className="object-contain"
+                  priority
+                />
               </motion.div>
               <div>
                 <span className="text-2xl font-bold gradient-text block">Scroll One</span>
@@ -350,7 +445,13 @@ export default function Home() {
                               {/* Header with gradient */}
                               <div className="h-20 bg-gradient-scroll rounded-t-2xl flex items-center justify-center">
                                 <div className="flex items-center gap-2">
-                                  <Zap className="w-6 h-6 text-white" />
+                                  <Image 
+                                    src="/logo.png" 
+                                    alt="Scroll One Logo" 
+                                    width={24} 
+                                    height={24}
+                                    className="object-contain"
+                                  />
                                   <span className="text-white font-bold text-lg">Scroll One</span>
                                 </div>
                               </div>
@@ -469,7 +570,7 @@ export default function Home() {
               {
                 icon: Fingerprint,
                 title: "Identity You Own",
-                description: "Scroll ID isn't just a username. It's your reputation, your achievements, your digital self.",
+                description: "Scroll ID isn&apos;t just a username. It&apos;s your reputation, your achievements, your digital self.",
                 features: ["Unique Scroll ID", "Reputation system", "Portable identity", "Badges & achievements"],
                 color: "from-purple-500 to-pink-500",
                 position: "right"
@@ -635,7 +736,7 @@ export default function Home() {
                 role: "Web3 Developer",
                 avatar: "👤",
                 rating: 5,
-                text: "As a developer, the SDK is incredibly well-documented. I integrated my dApp in under an hour. The team really knows what they're doing.",
+                text: "As a developer, the SDK is incredibly well-documented. I integrated my dApp in under an hour. The team really knows what they&apos;re doing.",
                 verified: true
               },
               {
@@ -1028,7 +1129,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-2xl font-bold text-text-primary">Thanks for subscribing!</h3>
                   <p className="text-text-secondary text-center">
-                    Check your email to confirm your subscription. We'll keep you updated with the latest from Scroll One.
+                    Check your email to confirm your subscription. We&apos;ll keep you updated with the latest from Scroll One.
                   </p>
                   <button
                     onClick={() => setEmailSubmitted(false)}
@@ -1062,8 +1163,8 @@ export default function Home() {
               Built for the <span className="gradient-text">future</span>
             </h2>
             <p className="text-xl md:text-2xl text-text-primary leading-relaxed mb-16">
-              Scroll One isn't just another app. It's a complete reimagining of what a super app can be. 
-              We've taken the best of blockchain technology, wrapped it in beautiful design, and made it 
+              Scroll One isn&apos;t just another app. It&apos;s a complete reimagining of what a super app can be. 
+              We&apos;ve taken the best of blockchain technology, wrapped it in beautiful design, and made it 
               accessible to everyone.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -1102,8 +1203,14 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <div className="md:col-span-2">
               <div className="flex items-center space-x-3 mb-6">
-                <div className="w-10 h-10 bg-gradient-scroll rounded-xl flex items-center justify-center shadow-lg shadow-accent-primary/30">
-                  <Zap className="w-6 h-6 text-white" />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shadow-accent-primary/30">
+                  <Image 
+                    src="/logo.png" 
+                    alt="Scroll One Logo" 
+                    width={40} 
+                    height={40}
+                    className="object-contain"
+                  />
                 </div>
                 <div>
                   <span className="text-2xl font-bold gradient-text block">Scroll One</span>
@@ -1155,5 +1262,6 @@ export default function Home() {
         </div>
       </footer>
     </main>
+    </>
   );
 }

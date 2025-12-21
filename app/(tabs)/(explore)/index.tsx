@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import {
   View,
   Text,
@@ -10,9 +10,12 @@ import {
   Platform,
   ScrollView,
   Dimensions,
+  FlatList,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
 } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
-import { Search, List, Grid } from 'lucide-react-native';
+import { Search, List, Grid, Shield } from 'lucide-react-native';
 import { colors, spacing, typography, borderRadius, shadows } from '@/theme';
 import { Screen } from '@/components/layout/Screen';
 import { MINIAPPS, getFeaturedMiniApps, getCategories } from '@/miniapps/registry';
@@ -42,6 +45,8 @@ export default function ExploreScreen() {
 
   const featuredApps = getFeaturedMiniApps();
   const categories = getCategories();
+  const [currentFeaturedIndex, setCurrentFeaturedIndex] = useState(0);
+  const featuredCarouselRef = useRef<FlatList>(null);
 
   const filteredApps = useMemo(() => {
     let apps = MINIAPPS.filter((app) => {
@@ -91,6 +96,63 @@ export default function ExploreScreen() {
 
   const navigateToApp = (app: MiniApp) => {
     router.push(`/(tabs)/(explore)/${app.id}` as any);
+  };
+
+  const onFeaturedScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const slideSize = SCREEN_WIDTH - spacing.base * 4;
+    const index = Math.round(event.nativeEvent.contentOffset.x / slideSize);
+    setCurrentFeaturedIndex(index);
+  };
+
+  const renderFeaturedCarouselItem = ({ item }: { item: MiniApp }) => (
+    <View style={styles.featuredCarouselItem}>
+      <TouchableOpacity
+        style={styles.featuredCard}
+        onPress={() => navigateToApp(item)}
+        activeOpacity={0.9}
+      >
+        <View style={styles.featuredCardContent}>
+          <View style={styles.featuredIconContainer}>
+            <Text style={styles.featuredIcon}>{item.icon}</Text>
+            {item.verified && (
+              <View style={styles.featuredVerifiedBadge}>
+                <Shield
+                  color={colors.accent.secondary}
+                  size={16}
+                  fill={colors.accent.secondary}
+                />
+              </View>
+            )}
+          </View>
+          <Text style={styles.featuredName} numberOfLines={2}>
+            {item.name}
+          </Text>
+          <Text style={styles.featuredDescription} numberOfLines={3}>
+            {item.description}
+          </Text>
+          <Text style={styles.featuredCategory}>{item.category}</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const renderFeaturedPagination = () => {
+    if (featuredApps.length <= 1) return null;
+    
+    return (
+      <View style={styles.paginationContainer}>
+        {featuredApps.map((_, index) => (
+          <View
+            key={index}
+            style={[
+              styles.paginationDot,
+              index === currentFeaturedIndex && styles.paginationDotActive,
+              index < featuredApps.length - 1 && styles.paginationDotMargin,
+            ]}
+          />
+        ))}
+      </View>
+    );
   };
 
   const renderFooter = () => {
@@ -159,27 +221,29 @@ export default function ExploreScreen() {
         >
           <Animated.View style={{ opacity: fadeAnim }}>
             {featuredApps.length > 0 && !searchQuery && !selectedCategory && (
-          <View style={styles.section}>
+              <View style={styles.featuredSection}>
                 <Text style={styles.sectionTitle}>Featured</Text>
-                {viewMode === 'list' ? (
-                  <View>
-                    {featuredApps.map((item) => (
-                      <MiniAppListCard
-                        key={`featured-${item.id}`}
-                        app={item}
-                        onPress={() => navigateToApp(item)}
-                      />
-                    ))}
-                  </View>
-                ) : (
-                  <View style={styles.gridContainer}>
-                    {featuredApps.map((item) => (
-                      <View key={`featured-${item.id}`} style={styles.gridItem}>
-                        <MiniAppGridCard app={item} onPress={() => navigateToApp(item)} />
-                      </View>
-                    ))}
-                  </View>
-                )}
+                <FlatList
+                  ref={featuredCarouselRef}
+                  data={featuredApps}
+                  renderItem={renderFeaturedCarouselItem}
+                  keyExtractor={(item) => `featured-${item.id}`}
+                  horizontal
+                  pagingEnabled={false}
+                  showsHorizontalScrollIndicator={false}
+                  snapToInterval={SCREEN_WIDTH - spacing.base * 4}
+                  snapToAlignment="center"
+                  decelerationRate="fast"
+                  contentContainerStyle={styles.featuredCarouselContent}
+                  onScroll={onFeaturedScroll}
+                  scrollEventThrottle={16}
+                  getItemLayout={(_, index) => ({
+                    length: SCREEN_WIDTH - spacing.base * 4,
+                    offset: (SCREEN_WIDTH - spacing.base * 4) * index,
+                    index,
+                  })}
+                />
+                {renderFeaturedPagination()}
               </View>
             )}
 
@@ -298,5 +362,90 @@ const styles = StyleSheet.create({
   footer: {
     paddingVertical: spacing.lg,
     alignItems: 'center',
+  },
+  featuredSection: {
+    marginBottom: spacing.xl,
+    paddingHorizontal: spacing.base,
+  },
+  featuredCarouselContent: {
+    paddingHorizontal: spacing.base,
+  },
+  featuredCarouselItem: {
+    width: SCREEN_WIDTH - spacing.base * 4,
+    paddingHorizontal: spacing.sm,
+  },
+  featuredCard: {
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.xl,
+    padding: spacing.xl,
+    borderWidth: 1,
+    borderColor: colors.border.subtle,
+    ...shadows.md,
+    minHeight: 200,
+  },
+  featuredCardContent: {
+    alignItems: 'center',
+  },
+  featuredIconContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: borderRadius.xl,
+    backgroundColor: colors.background.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.md,
+    position: 'relative' as const,
+  },
+  featuredIcon: {
+    fontSize: 40,
+  },
+  featuredVerifiedBadge: {
+    position: 'absolute' as const,
+    top: -6,
+    right: -6,
+    backgroundColor: colors.background.elevated,
+    borderRadius: 16,
+    padding: 4,
+    ...shadows.sm,
+  },
+  featuredName: {
+    fontSize: typography.fontSize.xl,
+    fontWeight: typography.fontWeight.bold,
+    color: colors.text.primary,
+    textAlign: 'center',
+    marginBottom: spacing.sm,
+  },
+  featuredDescription: {
+    fontSize: typography.fontSize.sm,
+    color: colors.text.secondary,
+    textAlign: 'center',
+    marginBottom: spacing.md,
+    lineHeight: 20,
+  },
+  featuredCategory: {
+    fontSize: typography.fontSize.xs,
+    color: colors.accent.primary,
+    fontWeight: typography.fontWeight.medium,
+    textTransform: 'uppercase' as const,
+    letterSpacing: 0.5,
+  },
+  paginationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: spacing.md,
+  },
+  paginationDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: colors.border.subtle,
+  },
+  paginationDotMargin: {
+    marginRight: spacing.xs,
+  },
+  paginationDotActive: {
+    width: 24,
+    backgroundColor: colors.accent.primary,
   },
 });

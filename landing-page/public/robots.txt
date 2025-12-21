@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://your-landing-page.vercel.app/sitemap.xml
+# Sitemaps
+Sitemap: https://scrollone.app/sitemap.xml
+
+# Disallow admin or private paths if any
+# Disallow: /admin/
+# Disallow: /api/

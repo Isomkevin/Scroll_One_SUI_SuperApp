@@ -1,0 +1,54 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Document/Scroll body - main rectangle -->
+  <path d="M 14 14 Q 14 12 16 12 L 34 12 L 42 20 L 42 44 Q 42 46 40 46 L 18 46 Q 16 46 16 44 L 16 22 Z" 
+        fill="#F5E6D3" 
+        stroke="#2C1E15" 
+        stroke-width="2.5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+  
+  <!-- Curled top-left corner (inward curl) -->
+  <path d="M 16 12 Q 14 12.5 14.5 14.5 Q 15 16.5 15.5 18" 
+        fill="none" 
+        stroke="#2C1E15" 
+        stroke-width="2.5" 
+        stroke-linecap="round"/>
+  
+  <!-- Rolled bottom-right corner (rolled up, showing underside) -->
+  <path d="M 40 44 Q 41.5 44.5 42 46 Q 42.5 47.5 43.5 48" 
+        fill="#E8D5C0" 
+        stroke="#2C1E15" 
+        stroke-width="2.5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+  
+  <!-- Three horizontal text lines (evenly spaced, centered) -->
+  <line x1="20" y1="26" x2="36" y2="26" 
+        stroke="#2C1E15" 
+        stroke-width="2.5" 
+        stroke-linecap="round"/>
+  <line x1="20" y1="32" x2="36" y2="32" 
+        stroke="#2C1E15" 
+        stroke-width="2.5" 
+        stroke-linecap="round"/>
+  <line x1="20" y1="38" x2="34" y2="38" 
+        stroke="#2C1E15" 
+        stroke-width="2.5" 
+        stroke-linecap="round"/>
+  
+  <!-- Notification badge circle (upper right, overlapping document) -->
+  <circle cx="46" cy="18" r="9" fill="#000000"/>
+  <text x="46" y="24" 
+        font-family="Arial, sans-serif" 
+        font-size="14" 
+        font-weight="bold" 
+        fill="#FFFFFF" 
+        text-anchor="middle" 
+        dominant-baseline="central">1</text>
+  
+  <!-- Connection line from badge to document (vertical line extending down) -->
+  <line x1="46" y1="27" x2="42" y2="20" 
+        stroke="#2C1E15" 
+        stroke-width="2" 
+        stroke-linecap="round"/>
+</svg>
