@@ -83,6 +83,7 @@ interface BridgeResponse<T = unknown> {
 ## Supported Methods
 
 ### GET_ACCOUNT
+
 Get connected wallet address.
 
 ```typescript
@@ -91,6 +92,7 @@ const account = await window.scrollOne.getAccount();
 ```
 
 ### GET_BALANCE
+
 Get ETH balance (token support coming soon).
 
 ```typescript
@@ -99,6 +101,7 @@ const balance = await window.scrollOne.getBalance();
 ```
 
 ### SIGN_TRANSACTION
+
 Sign and send a transaction (requires user approval).
 
 ```typescript
@@ -111,6 +114,7 @@ const result = await window.scrollOne.signTransaction({
 ```
 
 ### SIGN_MESSAGE
+
 Sign an arbitrary message.
 
 ```typescript
@@ -119,6 +123,7 @@ const result = await window.scrollOne.signMessage('Hello, Scroll!');
 ```
 
 ### SIGN_TYPED_DATA
+
 Sign EIP-712 typed data (coming soon).
 
 ```typescript
@@ -127,6 +132,7 @@ const result = await window.scrollOne.signTypedData(domain, types, value);
 ```
 
 ### GET_NETWORK
+
 Get current network information.
 
 ```typescript
@@ -135,6 +141,7 @@ const network = await window.scrollOne.getNetwork();
 ```
 
 ### ESTIMATE_GAS
+
 Estimate gas for a transaction.
 
 ```typescript
@@ -399,6 +406,7 @@ try {
 ### State Synchronization
 
 The bridge automatically syncs:
+
 - Wallet address changes
 - Network changes
 - Wallet lock/unlock state
@@ -407,6 +415,7 @@ The bridge automatically syncs:
 ### Cleanup
 
 On WebView reload:
+
 - Pending requests are cleared
 - Event listeners are preserved (dApp responsibility)
 - State is re-initialized
@@ -416,6 +425,7 @@ On WebView reload:
 Current version: **v1.0.0**
 
 The SDK follows semantic versioning:
+
 - **Major**: Breaking protocol changes
 - **Minor**: New methods/features (backward compatible)
 - **Patch**: Bug fixes
@@ -437,6 +447,7 @@ import type {
 ## Framework Agnostic
 
 The SDK has **zero dependencies** and works with:
+
 - React Native
 - Flutter (via platform channels)
 - Native iOS/Android
@@ -445,6 +456,7 @@ The SDK has **zero dependencies** and works with:
 ## Best Practices
 
 1. **Always check bridge readiness**
+
    ```typescript
    if (!window.scrollOne?.isScrollOne) {
      // Fallback to other providers
@@ -452,6 +464,7 @@ The SDK has **zero dependencies** and works with:
    ```
 
 2. **Handle errors gracefully**
+
    ```typescript
    try {
      await window.scrollOne.signTransaction(tx);
@@ -461,11 +474,13 @@ The SDK has **zero dependencies** and works with:
    ```
 
 3. **Listen for state changes**
+
    ```typescript
    window.scrollOne.on('accountChanged', handleAccountChange);
    ```
 
 4. **Validate transaction data**
+
    ```typescript
    if (!tx.to || !tx.value) {
      throw new Error('Invalid transaction');

@@ -45,6 +45,7 @@ export class ActionRegistry {
       console.warn(`[ActionRegistry] Handler for ${method} already registered, overwriting`);
     }
     this.handlers.set(method, handler);
+    console.log(`[ActionRegistry] Handler registered for ${method}`);
   }
 
   /**
@@ -68,11 +69,18 @@ export class ActionRegistry {
     message: BridgeMessage,
     context: HandlerContext
   ): Promise<BridgeResponse> {
+    console.log('[ActionRegistry] Handling message:', message.type, 'id:', message.id);
+    console.log('[ActionRegistry] Payload:', JSON.stringify(message.payload, null, 2));
+    
     // Run middleware
-    for (const mw of this.middleware) {
+    console.log('[ActionRegistry] Running middleware (count:', this.middleware.length, ')');
+    for (let i = 0; i < this.middleware.length; i++) {
       try {
-        await mw(message, context);
+        console.log(`[ActionRegistry] Executing middleware ${i + 1}/${this.middleware.length}`);
+        await this.middleware[i](message, context);
+        console.log(`[ActionRegistry] Middleware ${i + 1} completed successfully`);
       } catch (error) {
+        console.error(`[ActionRegistry] Middleware ${i + 1} failed:`, error);
         return {
           id: message.id,
           success: false,
@@ -83,10 +91,13 @@ export class ActionRegistry {
         };
       }
     }
+    console.log('[ActionRegistry] All middleware completed');
 
     // Get handler
     const handler = this.handlers.get(message.type);
     if (!handler) {
+      console.error('[ActionRegistry] No handler found for method:', message.type);
+      console.log('[ActionRegistry] Registered methods:', Array.from(this.handlers.keys()));
       return {
         id: message.id,
         success: false,
@@ -96,16 +107,20 @@ export class ActionRegistry {
         },
       };
     }
+    console.log('[ActionRegistry] Handler found for method:', message.type);
 
     // Execute handler
     try {
+      console.log('[ActionRegistry] Executing handler...');
       const data = await handler(message.payload, context);
+      console.log('[ActionRegistry] Handler executed successfully, result:', JSON.stringify(data, null, 2));
       return {
         id: message.id,
         success: true,
         data,
       };
     } catch (error) {
+      console.error('[ActionRegistry] Handler execution failed:', error);
       return {
         id: message.id,
         success: false,

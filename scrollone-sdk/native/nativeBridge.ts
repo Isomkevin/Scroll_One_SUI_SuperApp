@@ -114,27 +114,36 @@ export class NativeBridge {
     message: unknown,
     context: HandlerContext
   ): Promise<BridgeResponse> {
+    console.log('[NativeBridge] handleMessage called with message:', JSON.stringify(message, null, 2));
+    console.log('[NativeBridge] Context:', context);
+    
     // Validate message format
     if (!isBridgeMessage(message)) {
+      console.error('[NativeBridge] Message is not a valid BridgeMessage');
       return createErrorResponse(
         'unknown',
         BridgeErrorCode.INVALID_MESSAGE,
         'Invalid message format'
       );
     }
+    console.log('[NativeBridge] Message format validated');
 
     // Validate message structure
     const validation = validateMessage(message);
     if (!validation.valid) {
+      console.error('[NativeBridge] Message validation failed:', validation.error);
       return createErrorResponse(
         message.id,
         validation.error || BridgeErrorCode.INVALID_MESSAGE,
         'Message validation failed'
       );
     }
+    console.log('[NativeBridge] Message structure validated, routing to registry');
 
     // Handle the message
-    return this.registry.handle(message, context);
+    const response = await this.registry.handle(message, context);
+    console.log('[NativeBridge] Registry returned response:', JSON.stringify(response, null, 2));
+    return response;
   }
 
   /**
