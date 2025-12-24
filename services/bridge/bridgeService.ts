@@ -27,6 +27,7 @@ class BridgeService {
   private pendingTransactions: Map<string, { request: TransactionRequest; resolve: (value: any) => void; reject: (error: any) => void }> = new Map();
 
   constructor() {
+    console.log('[BridgeService] Initializing BridgeService...');
     // Initialize native bridge with security config
     this.nativeBridge = new NativeBridge({
       // Allow all origins for now (can be restricted per app)
@@ -34,22 +35,33 @@ class BridgeService {
       // Allow all methods
       allowedMethods: () => true,
     });
+    console.log('[BridgeService] NativeBridge initialized');
 
     // Register all handlers
     this.registerHandlers();
+    console.log('[BridgeService] BridgeService initialization complete');
   }
 
   /**
    * Register all handlers
    */
   private registerHandlers(): void {
+    console.log('[BridgeService] Registering handlers...');
     this.nativeBridge.register(BridgeMethod.GET_ACCOUNT, createGetAccountHandler());
+    console.log('[BridgeService] Registered handler: GET_ACCOUNT');
     this.nativeBridge.register(BridgeMethod.GET_BALANCE, createGetBalanceHandler());
+    console.log('[BridgeService] Registered handler: GET_BALANCE');
     this.nativeBridge.register(BridgeMethod.SIGN_TRANSACTION, createSignTransactionHandler());
+    console.log('[BridgeService] Registered handler: SIGN_TRANSACTION');
     this.nativeBridge.register(BridgeMethod.SIGN_MESSAGE, createSignMessageHandler());
+    console.log('[BridgeService] Registered handler: SIGN_MESSAGE');
     this.nativeBridge.register(BridgeMethod.SIGN_TYPED_DATA, createSignTypedDataHandler());
+    console.log('[BridgeService] Registered handler: SIGN_TYPED_DATA');
     this.nativeBridge.register(BridgeMethod.GET_NETWORK, createGetNetworkHandler());
+    console.log('[BridgeService] Registered handler: GET_NETWORK');
     this.nativeBridge.register(BridgeMethod.ESTIMATE_GAS, createEstimateGasHandler());
+    console.log('[BridgeService] Registered handler: ESTIMATE_GAS');
+    console.log('[BridgeService] All handlers registered');
   }
 
   /**
@@ -59,7 +71,16 @@ class BridgeService {
     message: unknown,
     context: HandlerContext
   ) {
-    return this.nativeBridge.handleMessage(message, context);
+    console.log('[BridgeService] Handling message:', JSON.stringify(message, null, 2));
+    console.log('[BridgeService] Context:', { 
+      walletAddress: context.walletAddress, 
+      isWalletLocked: context.isWalletLocked, 
+      chainId: context.chainId, 
+      origin: context.origin 
+    });
+    const response = await this.nativeBridge.handleMessage(message, context);
+    console.log('[BridgeService] Response:', JSON.stringify(response, null, 2));
+    return response;
   }
 
   /**
@@ -71,7 +92,10 @@ class BridgeService {
     isWalletLocked: boolean;
     kycSharingEnabled: boolean;
   }): string {
-    return generateInjectedScript(config);
+    console.log('[BridgeService] Generating injected script with config:', config);
+    const script = generateInjectedScript(config);
+    console.log('[BridgeService] Generated script length:', script.length);
+    return script;
   }
 
   /**

@@ -28,10 +28,18 @@ import { BridgeErrorCode, createBridgeError } from '@/scrollone-sdk';
  */
 export function createGetAccountHandler() {
   return async (_payload: unknown, context: HandlerContext): Promise<AccountInfo> => {
-    return {
+    console.log('[Handler:GET_ACCOUNT] Handler invoked with context:', {
+      walletAddress: context.walletAddress,
+      isWalletLocked: context.isWalletLocked,
+      chainId: context.chainId,
+      origin: context.origin,
+    });
+    const result = {
       address: context.walletAddress,
       isConnected: !!context.walletAddress,
     };
+    console.log('[Handler:GET_ACCOUNT] Returning result:', result);
+    return result;
   };
 }
 
@@ -40,7 +48,14 @@ export function createGetAccountHandler() {
  */
 export function createGetBalanceHandler() {
   return async (payload: { tokenAddress?: string } | undefined, context: HandlerContext): Promise<BalanceInfo> => {
+    console.log('[Handler:GET_BALANCE] Handler invoked with payload:', payload, 'context:', {
+      walletAddress: context.walletAddress,
+      isWalletLocked: context.isWalletLocked,
+      chainId: context.chainId,
+    });
+    
     if (!context.walletAddress) {
+      console.error('[Handler:GET_BALANCE] Wallet not connected');
       throw createBridgeError(
         BridgeErrorCode.WALLET_NOT_CONNECTED,
         'Wallet not connected'
@@ -50,6 +65,7 @@ export function createGetBalanceHandler() {
     // For now, only support ETH balance
     // TODO: Add ERC-20 token support
     if (payload?.tokenAddress) {
+      console.warn('[Handler:GET_BALANCE] Token balance requested but not supported:', payload.tokenAddress);
       throw createBridgeError(
         BridgeErrorCode.UNSUPPORTED_METHOD,
         'Token balance not yet supported'
@@ -57,13 +73,17 @@ export function createGetBalanceHandler() {
     }
 
     try {
+      console.log('[Handler:GET_BALANCE] Fetching balance for address:', context.walletAddress);
       const balance = await scrollProvider.getBalance(context.walletAddress);
-      return {
+      const result = {
         balance,
         formatted: formatEther(parseEther(balance)),
         symbol: 'ETH',
       };
+      console.log('[Handler:GET_BALANCE] Balance fetched successfully:', result);
+      return result;
     } catch (error) {
+      console.error('[Handler:GET_BALANCE] Error fetching balance:', error);
       throw createBridgeError(
         BridgeErrorCode.NETWORK_ERROR,
         `Failed to fetch balance: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -78,14 +98,24 @@ export function createGetBalanceHandler() {
  */
 export function createSignTransactionHandler() {
   return async (payload: TransactionRequest, context: HandlerContext): Promise<{ pending: boolean; requiresApproval: true }> => {
+    console.log('[Handler:SIGN_TRANSACTION] Handler invoked with payload:', JSON.stringify(payload, null, 2));
+    console.log('[Handler:SIGN_TRANSACTION] Context:', {
+      walletAddress: context.walletAddress,
+      isWalletLocked: context.isWalletLocked,
+      chainId: context.chainId,
+      origin: context.origin,
+    });
+    
     // Validation
     if (!payload.to) {
+      console.error('[Handler:SIGN_TRANSACTION] Validation failed: missing "to" address');
       throw createBridgeError(
         BridgeErrorCode.INVALID_PAYLOAD,
         'Transaction "to" address is required'
       );
     }
 
+    console.log('[Handler:SIGN_TRANSACTION] Transaction validated, returning pending response');
     // Return pending - actual execution happens after user approval
     return {
       pending: true,
@@ -140,7 +170,10 @@ export async function executeTransaction(
  */
 export function createSignMessageHandler() {
   return async (payload: SignMessageRequest, context: HandlerContext): Promise<SignMessageResponse> => {
+    console.log('[Handler:SIGN_MESSAGE] Handler invoked with payload:', payload);
+    
     if (!context.walletAddress) {
+      console.error('[Handler:SIGN_MESSAGE] Wallet not connected');
       throw createBridgeError(
         BridgeErrorCode.WALLET_NOT_CONNECTED,
         'Wallet not connected'
@@ -148,6 +181,7 @@ export function createSignMessageHandler() {
     }
 
     if (!payload.message) {
+      console.error('[Handler:SIGN_MESSAGE] Message is required');
       throw createBridgeError(
         BridgeErrorCode.INVALID_PAYLOAD,
         'Message is required'
@@ -155,9 +189,12 @@ export function createSignMessageHandler() {
     }
 
     try {
+      console.log('[Handler:SIGN_MESSAGE] Signing message...');
       const signature = await signMessage(payload.message);
+      console.log('[Handler:SIGN_MESSAGE] Message signed successfully');
       return { signature };
     } catch (error) {
+      console.error('[Handler:SIGN_MESSAGE] Error signing message:', error);
       throw createBridgeError(
         BridgeErrorCode.SIGN_FAILED,
         `Failed to sign message: ${error instanceof Error ? error.message : 'Unknown error'}`,
@@ -193,13 +230,16 @@ export function createSignTypedDataHandler() {
  */
 export function createGetNetworkHandler() {
   return async (_payload: unknown, context: HandlerContext): Promise<NetworkInfo> => {
+    console.log('[Handler:GET_NETWORK] Handler invoked');
     const config = scrollProvider.getConfig();
-    return {
+    const result = {
       chainId: config.chainId,
       chainName: config.chainName,
       rpcUrl: config.rpcUrl,
       isTestnet: config.chainId === 534351,
     };
+    console.log('[Handler:GET_NETWORK] Returning network info:', result);
+    return result;
   };
 }
 
@@ -208,7 +248,10 @@ export function createGetNetworkHandler() {
  */
 export function createEstimateGasHandler() {
   return async (payload: TransactionRequest, context: HandlerContext): Promise<GasEstimate> => {
+    console.log('[Handler:ESTIMATE_GAS] Handler invoked with payload:', payload);
+    
     if (!payload.to) {
+      console.error('[Handler:ESTIMATE_GAS] Validation failed: missing "to" address');
       throw createBridgeError(
         BridgeErrorCode.INVALID_PAYLOAD,
         'Transaction "to" address is required'
@@ -216,6 +259,7 @@ export function createEstimateGasHandler() {
     }
 
     try {
+      console.log('[Handler:ESTIMATE_GAS] Estimating gas...');
       const provider = scrollProvider.getProvider();
       const gasEstimate = await scrollProvider.estimateGas({
         to: payload.to,
@@ -226,12 +270,15 @@ export function createEstimateGasHandler() {
       const gasPrice = await scrollProvider.getGasPrice();
       const totalFee = gasEstimate * gasPrice;
       
-      return {
+      const result = {
         gasLimit: gasEstimate.toString(),
         gasPrice: gasPrice.toString(),
         estimatedFee: formatEther(totalFee.toString()),
       };
+      console.log('[Handler:ESTIMATE_GAS] Gas estimation complete:', result);
+      return result;
     } catch (error) {
+      console.error('[Handler:ESTIMATE_GAS] Error estimating gas:', error);
       throw createBridgeError(
         BridgeErrorCode.GAS_ESTIMATION_FAILED,
         `Gas estimation failed: ${error instanceof Error ? error.message : 'Unknown error'}`,

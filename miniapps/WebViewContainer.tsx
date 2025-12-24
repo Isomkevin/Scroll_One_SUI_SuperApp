@@ -32,25 +32,38 @@ export function WebViewContainer({ app, onError }: WebViewContainerProps) {
 
   // Generate injected script using SDK
   const generateInjectedScript = useCallback(() => {
-    return bridgeService.generateInjectedScript({
+    console.log('[WebViewContainer] Generating injected script...');
+    const script = bridgeService.generateInjectedScript({
       walletAddress: isWalletLocked ? null : address,
       chainId: config.chainId,
       isWalletLocked,
       kycSharingEnabled,
     });
+    console.log('[WebViewContainer] Injected script generated, length:', script.length);
+    return script;
   }, [address, isWalletLocked, kycSharingEnabled, config.chainId]);
 
   // Handle messages from WebView
   const handleMessage = useCallback(async (event: WebViewMessageEvent) => {
+    // Log ALL raw messages first, before any filtering
+    console.log('[WebViewContainer] Raw message received:', event.nativeEvent.data);
+    
     try {
       const data = JSON.parse(event.nativeEvent.data);
+      console.log('[WebViewContainer] Parsed message data:', JSON.stringify(data, null, 2));
       
       // Only handle bridge messages
       if (!data.id || !data.type || data.source !== 'web') {
+        console.log('[WebViewContainer] Message filtered out (not a bridge message):', {
+          hasId: !!data.id,
+          hasType: !!data.type,
+          source: data.source,
+          expectedSource: 'web'
+        });
         return;
       }
 
-      console.log('[WebViewContainer] Bridge message from WebView:', data);
+      console.log('[WebViewContainer] Bridge message from WebView:', JSON.stringify(data, null, 2));
 
       // Create handler context
       const context = {
@@ -61,10 +74,13 @@ export function WebViewContainer({ app, onError }: WebViewContainerProps) {
       };
 
       // Handle message
+      console.log('[WebViewContainer] Forwarding message to bridgeService...');
       const response = await bridgeService.handleMessage(data, context);
+      console.log('[WebViewContainer] Received response from bridgeService:', JSON.stringify(response, null, 2));
 
       // Check if transaction requires approval
       if (data.type === BridgeMethod.SIGN_TRANSACTION && response.success && response.data?.requiresApproval) {
+        console.log('[WebViewContainer] Transaction requires approval, storing pending transaction...');
         // Store pending transaction
         bridgeService.storePendingTransaction(
           data.id,
@@ -97,6 +113,7 @@ export function WebViewContainer({ app, onError }: WebViewContainerProps) {
       }
 
       // Send response
+      console.log('[WebViewContainer] Sending response to WebView:', JSON.stringify(response, null, 2));
       sendResponseToWebView(response);
     } catch (error) {
       console.error('[WebViewContainer] Error handling message:', error);
@@ -118,7 +135,11 @@ export function WebViewContainer({ app, onError }: WebViewContainerProps) {
         type: 'BRIDGE_RESPONSE',
         payload: response,
       };
-      webViewRef.current.postMessage(JSON.stringify(message));
+      const messageStr = JSON.stringify(message);
+      console.log('[WebViewContainer] Posting message to WebView:', messageStr);
+      webViewRef.current.postMessage(messageStr);
+    } else {
+      console.warn('[WebViewContainer] Cannot send response: webViewRef.current is null');
     }
   }, []);
 
@@ -184,6 +205,37 @@ export function WebViewContainer({ app, onError }: WebViewContainerProps) {
   const handleLoadEnd = () => {
     console.log('[WebViewContainer] WebView loaded successfully');
     setIsLoading(false);
+    
+    // Inject verification script to check if window.scrollOne is available
+    if (webViewRef.current) {
+      const verificationScript = `
+        (function() {
+          console.log('[WebView] Verifying window.scrollOne availability...');
+          if (typeof window !== 'undefined') {
+            console.log('[WebView] window exists');
+            if (window.scrollOne) {
+              console.log('[WebView] window.scrollOne is available:', {
+                version: window.scrollOne.version,
+                isReady: window.scrollOne.isReady,
+                hasGetAccount: typeof window.scrollOne.getAccount === 'function',
+                hasGetBalance: typeof window.scrollOne.getBalance === 'function',
+                hasSignTransaction: typeof window.scrollOne.signTransaction === 'function',
+                hasSignMessage: typeof window.scrollOne.signMessage === 'function',
+                hasGetNetwork: typeof window.scrollOne.getNetwork === 'function',
+              });
+            } else {
+              console.error('[WebView] window.scrollOne is NOT available!');
+            }
+          } else {
+            console.error('[WebView] window is undefined!');
+          }
+        })();
+        true;
+      `;
+      setTimeout(() => {
+        webViewRef.current?.injectJavaScript(verificationScript);
+      }, 500);
+    }
   };
 
   if (Platform.OS === 'web') {
