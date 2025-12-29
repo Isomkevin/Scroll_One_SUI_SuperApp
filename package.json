@@ -7,7 +7,7 @@
     "start-web": "bunx rork start -p luz4wtjarw7o3iqv4yipg --web --tunnel",
     "start-web-dev": "DEBUG=expo* bunx rork start -p luz4wtjarw7o3iqv4yipg --web --tunnel",
     "lint": "expo lint",
-    "postinstall": "node -e \"const fs=require('fs'),path=require('path');['expo-notifications/node_modules/expo-constants','@teovilla/react-native-web-maps/node_modules/expo-location'].forEach(p=>{const full=path.join('node_modules',p);try{fs.rmSync(full,{recursive:true,force:true});}catch(e){}});\""
+    "postinstall": "node -e \"const fs=require('fs'),path=require('path');['expo-notifications/node_modules/expo-constants','@teovilla/react-native-web-maps/node_modules/expo-location','expo-image-picker/node_modules/expo-image-loader'].forEach(p=>{const full=path.join('node_modules',p);try{fs.rmSync(full,{recursive:true,force:true});}catch(e){}});\""
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",
@@ -22,8 +22,9 @@
     "axios": "^1.7.9",
     "ethers": "^6.0.0",
     "expo": "~54.0.30",
+    "expo-barcode-scanner": "^13.0.1",
     "expo-blur": "~15.0.8",
-    "expo-camera": "~16.0.18",
+    "expo-camera": "^17.0.10",
     "expo-clipboard": "~8.0.8",
     "expo-constants": "~18.0.11",
     "expo-crypto": "^15.0.8",
@@ -68,16 +69,13 @@
   },
   "resolutions": {
     "expo-constants": "~18.0.11",
-    "expo-location": "~19.0.8"
+    "expo-location": "~19.0.8",
+    "expo-image-loader": "6.0.0"
   },
   "overrides": {
     "expo-constants": "~18.0.11",
-    "expo-location": "~19.0.8"
-  },
-  "expo": {
-    "install": {
-      "exclude": ["expo-camera"]
-    }
+    "expo-location": "~19.0.8",
+    "expo-image-loader": "6.0.0"
   },
   "private": true
 }
