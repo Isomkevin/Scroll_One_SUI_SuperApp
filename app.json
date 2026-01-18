@@ -31,7 +31,8 @@
       },
       "package": "app.rork.scroll_one_superapp",
       "permissions": [
-        "android.permission.VIBRATE"
+        "android.permission.VIBRATE",
+        "android.permission.CAMERA"
       ]
     },
     "web": {
@@ -68,6 +69,9 @@
     "extra": {
       "router": {
         "origin": "https://rork.com/"
+      },
+      "eas": {
+        "projectId": "b2fa4db8-c89c-4d2a-aeea-a1b0970de501"
       }
     }
   }

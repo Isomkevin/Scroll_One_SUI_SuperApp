@@ -1,0 +1,123 @@
+# Building Android APK
+
+## Purpose
+
+This guide explains how to generate APK files for the Scroll One SuperApp, including both local builds and cloud-based EAS Build.
+
+**Audience**: Mobile developers, DevOps engineers
+
+## Prerequisites
+
+1. **Java Development Kit (JDK)**: Version 17 or higher
+   - Download from: https://adoptium.net/
+   - Set `JAVA_HOME` environment variable
+
+2. **Android SDK** (Optional but recommended for local builds)
+   - Install Android Studio: https://developer.android.com/studio
+   - Set `ANDROID_HOME` environment variable
+
+## Method 1: Local Build
+
+The Android native project has been generated. To build the APK:
+
+### Step 1: Navigate to Android directory
+
+```powershell
+cd android
+```
+
+### Step 2: Build the APK
+
+```powershell
+.\gradlew.bat assembleRelease
+```
+
+**Note**: The first build may take 10-20 minutes as it downloads dependencies and sets up the build environment.
+
+### Step 3: Find your APK
+
+After the build completes, your APK will be located at:
+```
+android/app/build/outputs/apk/release/app-release.apk
+```
+
+### Alternative: Build Debug APK (faster, for testing)
+
+```powershell
+.\gradlew.bat assembleDebug
+```
+
+Debug APK location: `android/app/build/outputs/apk/debug/app-debug.apk`
+
+## Method 2: EAS Build (Cloud - Recommended for Production)
+
+EAS Build is Expo's cloud-based build service. It's easier and doesn't require local Android SDK setup.
+
+### Step 1: Configure EAS Project (if not already done)
+
+```powershell
+npx eas-cli build:configure
+```
+
+### Step 2: Build APK
+
+```powershell
+# For preview/testing
+npx eas-cli build --platform android --profile preview
+
+# For production
+npx eas-cli build --platform android --profile production
+```
+
+### Step 3: Download APK
+
+After the build completes (usually 10-15 minutes), you'll receive a download link. You can also check your builds at: https://expo.dev/accounts/[your-account]/projects/scroll-one-superapp/builds
+
+## Troubleshooting
+
+### Build Fails with "SDK not found"
+
+- Install Android Studio and Android SDK
+- Set `ANDROID_HOME` environment variable to your SDK path (usually `C:\Users\YourName\AppData\Local\Android\Sdk`)
+
+### Build Fails with Java Version Error
+
+- Ensure JDK 17+ is installed
+- Set `JAVA_HOME` environment variable
+- Verify: `java -version`
+
+### Gradle Build is Slow
+
+- First build always takes longer (downloading dependencies)
+- Subsequent builds will be faster
+- Consider using EAS Build for faster cloud builds
+
+### APK Not Found
+
+- Check `android/app/build/outputs/apk/` directory
+- Ensure build completed successfully (no errors)
+
+## Signing the APK (For Production)
+
+For production releases, you need to sign your APK. See the Android documentation:
+https://developer.android.com/studio/publish/app-signing
+
+## Current Configuration
+
+- **Package Name**: `app.rork.scroll_one_superapp`
+- **Version**: `1.0.0`
+- **Build Type**: APK (configured in `eas.json`)
+
+## Next Steps
+
+1. Test the APK on an Android device
+2. For production, set up app signing
+3. Consider using EAS Build for automated builds
+4. Set up CI/CD for automated releases
+
+---
+
+**Related Documentation:**
+- [Production Checklist](./production-checklist.md)
+- [CI/CD](./ci-cd.md)
+- [Environments](./environments.md)

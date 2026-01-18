@@ -128,15 +128,15 @@ The landing page includes a hidden Super Admin Dashboard accessible at `/admin-s
 - Complete audit log
 
 **Setup:**
-1. See [ADMIN_DASHBOARD_SETUP.md](../ADMIN_DASHBOARD_SETUP.md) for setup instructions
+1. See [Admin Dashboard Setup](../docs/deployment/admin-setup.md) for setup instructions
 2. Create Super Admin user in database
 3. Set `NEXT_PUBLIC_API_URL` in `.env.local`
 4. Access at `http://localhost:3000/admin-super`
 
 **Documentation:**
-- [ADMIN_DASHBOARD_DOCUMENTATION.md](../ADMIN_DASHBOARD_DOCUMENTATION.md) - Complete documentation
-- [ADMIN_DASHBOARD_SETUP.md](../ADMIN_DASHBOARD_SETUP.md) - Setup guide
-- [ADMIN_DASHBOARD_SUMMARY.md](../ADMIN_DASHBOARD_SUMMARY.md) - Implementation summary
+- [Admin Dashboard Documentation](../docs/backend/admin-dashboard.md) - Complete documentation
+- [Admin Dashboard Setup](../docs/deployment/admin-setup.md) - Setup guide
+- [Landing Page Documentation](../docs/frontend/landing-page.md) - Landing page details
 
 ## 🎨 Design Features
 

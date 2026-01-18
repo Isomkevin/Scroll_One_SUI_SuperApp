@@ -7,7 +7,9 @@
     "start-web": "bunx rork start -p luz4wtjarw7o3iqv4yipg --web --tunnel",
     "start-web-dev": "DEBUG=expo* bunx rork start -p luz4wtjarw7o3iqv4yipg --web --tunnel",
     "lint": "expo lint",
-    "postinstall": "node -e \"const fs=require('fs'),path=require('path');['expo-notifications/node_modules/expo-constants','@teovilla/react-native-web-maps/node_modules/expo-location','expo-image-picker/node_modules/expo-image-loader'].forEach(p=>{const full=path.join('node_modules',p);try{fs.rmSync(full,{recursive:true,force:true});}catch(e){}});\""
+    "postinstall": "node -e \"const fs=require('fs'),path=require('path');['expo-notifications/node_modules/expo-constants','@teovilla/react-native-web-maps/node_modules/expo-location','expo-image-picker/node_modules/expo-image-loader'].forEach(p=>{const full=path.join('node_modules',p);try{fs.rmSync(full,{recursive:true,force:true});}catch(e){}});\"",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.4.2",

@@ -280,9 +280,8 @@ MIT
 
 The backend includes a comprehensive Super Admin Dashboard for platform management. See:
 
-- **[ADMIN_DASHBOARD_DOCUMENTATION.md](../ADMIN_DASHBOARD_DOCUMENTATION.md)** - Complete documentation
-- **[ADMIN_DASHBOARD_SETUP.md](../ADMIN_DASHBOARD_SETUP.md)** - Setup guide
-- **[ADMIN_DASHBOARD_SUMMARY.md](../ADMIN_DASHBOARD_SUMMARY.md)** - Implementation summary
+- **[Admin Dashboard Documentation](../docs/backend/admin-dashboard.md)** - Complete documentation
+- **[Admin Dashboard Setup](../docs/deployment/admin-setup.md)** - Setup guide
 
 ### Quick Admin Setup
 
