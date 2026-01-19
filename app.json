@@ -33,7 +33,10 @@
       "permissions": [
         "android.permission.VIBRATE",
         "android.permission.CAMERA"
-      ]
+      ],
+      "minSdkVersion": 24,
+      "compileSdkVersion": 36,
+      "targetSdkVersion": 36
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
