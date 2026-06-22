@@ -1,4 +1,4 @@
-import { Wallet } from 'ethers';
+import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519';
 import type {
   HandshakeAckPayload,
   HandshakeChallengePayload,
@@ -21,12 +21,12 @@ export class MiniAppProtocolClient {
   constructor(
     private readonly miniAppId: string,
     private readonly origin: string,
-    private readonly wallet: Wallet,
+    private readonly keypair: Ed25519Keypair,
   ) {}
 
   createHandshakeInit(requestedPermissions: MiniAppPermission[]): ProtocolEnvelope<HandshakeInitPayload> {
     return this.makeEnvelope('handshake:init', {
-      publicKey: this.wallet.address,
+      publicKey: this.keypair.toSuiAddress(),
       requestedPermissions,
     });
   }
@@ -34,11 +34,13 @@ export class MiniAppProtocolClient {
   async createHandshakeAck(
     challengeEnvelope: ProtocolEnvelope<HandshakeChallengePayload>,
   ): Promise<ProtocolEnvelope<HandshakeAckPayload>> {
-    const signature = await this.wallet.signMessage(challengeEnvelope.payload?.challenge ?? '');
+    const challenge = challengeEnvelope.payload?.challenge ?? '';
+    const messageBytes = new TextEncoder().encode(challenge);
+    const { signature } = await this.keypair.signPersonalMessage(messageBytes);
 
     return {
       ...this.makeEnvelope('handshake:ack', {
-        challenge: challengeEnvelope.payload?.challenge ?? '',
+        challenge,
         signedChallenge: signature,
       }),
       correlationId: challengeEnvelope.id,

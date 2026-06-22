@@ -118,8 +118,9 @@ Key environment variables (see `.env.example` for complete list):
 - `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` - Database configuration
 - `REDIS_HOST`, `REDIS_PORT` - Redis configuration
 - `JWT_SECRET` - JWT signing secret
-- `SCROLL_RPC_URL` - Scroll blockchain RPC endpoint
-- `SCROLLSCAN_API_KEY` - ScrollScan API key for transaction indexing
+- `SUI_MAINNET_RPC_URL` - Sui mainnet RPC endpoint
+- `SUI_TESTNET_RPC_URL` - Sui testnet RPC endpoint
+- `SUI_DEVNET_RPC_URL` - Sui devnet RPC endpoint (optional)
 - `COINGECKO_API_KEY` - CoinGecko API key for price data
 
 ## Development

@@ -3,9 +3,9 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: scroll_one_postgres
+    container_name: sui_one_postgres
     environment:
-      POSTGRES_DB: ${DB_NAME:-scroll_one}
+      POSTGRES_DB: ${DB_NAME:-sui_one}
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
     ports:
@@ -19,11 +19,11 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - scroll_one_network
+      - sui_one_network
 
   redis:
     image: redis:7-alpine
-    container_name: scroll_one_redis
+    container_name: sui_one_redis
     ports:
       - "${REDIS_PORT:-6379}:6379"
     volumes:
@@ -35,13 +35,13 @@ services:
       timeout: 3s
       retries: 5
     networks:
-      - scroll_one_network
+      - sui_one_network
 
   backend:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: scroll_one_backend
+    container_name: sui_one_backend
     ports:
       - "${PORT:-3000}:3000"
     environment:
@@ -49,15 +49,15 @@ services:
       PORT: ${PORT:-3000}
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_NAME: ${DB_NAME:-scroll_one}
+      DB_NAME: ${DB_NAME:-sui_one}
       DB_USER: ${DB_USER:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
       REDIS_HOST: redis
       REDIS_PORT: 6379
       JWT_SECRET: ${JWT_SECRET}
-      SCROLL_RPC_URL: ${SCROLL_RPC_URL}
-      SCROLL_TESTNET_RPC_URL: ${SCROLL_TESTNET_RPC_URL}
-      SCROLLSCAN_API_KEY: ${SCROLLSCAN_API_KEY}
+      SUI_MAINNET_RPC_URL: ${SUI_MAINNET_RPC_URL}
+      SUI_TESTNET_RPC_URL: ${SUI_TESTNET_RPC_URL}
+      SUI_DEVNET_RPC_URL: ${SUI_DEVNET_RPC_URL}
       COINGECKO_API_KEY: ${COINGECKO_API_KEY}
     depends_on:
       postgres:
@@ -67,7 +67,7 @@ services:
     volumes:
       - ./logs:/app/logs
     networks:
-      - scroll_one_network
+      - sui_one_network
     restart: unless-stopped
 
 volumes:
@@ -77,6 +77,6 @@ volumes:
     driver: local
 
 networks:
-  scroll_one_network:
+  sui_one_network:
     driver: bridge
 

@@ -1,3 +1,4 @@
+import { config } from '../../config/environment';
 import { SuiJsonRpcClient, getJsonRpcFullnodeUrl } from '@mysten/sui/jsonRpc';
 import { MIST_PER_SUI } from '@mysten/sui/utils';
 import { logger } from '../../config/logger';
@@ -25,12 +26,12 @@ const CHAIN_NAMES: Record<SuiNetworkName, string> = {
 
 function resolveRpcUrl(network: SuiNetworkName): string {
   if (network === 'mainnet') {
-    return process.env.SUI_MAINNET_RPC_URL || getJsonRpcFullnodeUrl('mainnet');
+    return config.blockchain.suiMainnetRpcUrl || getJsonRpcFullnodeUrl('mainnet');
   }
   if (network === 'testnet') {
-    return process.env.SUI_TESTNET_RPC_URL || getJsonRpcFullnodeUrl('testnet');
+    return config.blockchain.suiTestnetRpcUrl || getJsonRpcFullnodeUrl('testnet');
   }
-  return process.env.SUI_DEVNET_RPC_URL || getJsonRpcFullnodeUrl('devnet');
+  return config.blockchain.suiDevnetRpcUrl || getJsonRpcFullnodeUrl('devnet');
 }
 
 export class SuiProvider {

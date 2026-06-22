@@ -1,6 +1,7 @@
 import { SuiJsonRpcClient, getJsonRpcFullnodeUrl } from '@mysten/sui/jsonRpc';
 import { MIST_PER_SUI, SUI_TYPE_ARG } from '@mysten/sui/utils';
 import { Transaction } from '@mysten/sui/transactions';
+import { env } from '@/config/env';
 
 export type SuiNetworkName = 'mainnet' | 'testnet' | 'devnet';
 
@@ -32,12 +33,12 @@ const EXPLORER_URLS: Record<SuiNetworkName, string> = {
 
 function resolveRpcUrl(network: SuiNetworkName): string {
   if (network === 'mainnet') {
-    return process.env.EXPO_PUBLIC_SUI_MAINNET_RPC_URL || getJsonRpcFullnodeUrl('mainnet');
+    return env.sui.mainnetRpcUrl || getJsonRpcFullnodeUrl('mainnet');
   }
   if (network === 'testnet') {
-    return process.env.EXPO_PUBLIC_SUI_TESTNET_RPC_URL || getJsonRpcFullnodeUrl('testnet');
+    return env.sui.testnetRpcUrl || getJsonRpcFullnodeUrl('testnet');
   }
-  return process.env.EXPO_PUBLIC_SUI_DEVNET_RPC_URL || getJsonRpcFullnodeUrl('devnet');
+  return env.sui.devnetRpcUrl || getJsonRpcFullnodeUrl('devnet');
 }
 
 export class SuiProvider {

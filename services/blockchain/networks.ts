@@ -1,3 +1,5 @@
+import { env } from '@/config/env';
+
 export type SupportedEnvironment = 'dev' | 'testnet' | 'mainnet';
 
 export interface ChainConfig {
@@ -18,7 +20,7 @@ export const CHAIN_BY_ENV: Record<SupportedEnvironment, ChainConfig> = {
     chainId: 103,
     chainName: 'Sui Devnet',
     network: 'devnet',
-    rpcUrl: process.env.EXPO_PUBLIC_SUI_DEVNET_RPC_URL || 'https://fullnode.devnet.sui.io:443',
+    rpcUrl: env.sui.devnetRpcUrl,
     explorerTxUrl: 'https://suiscan.xyz/devnet/tx/',
     nativeCurrency: { name: 'Sui', symbol: 'SUI', decimals: 9 },
   },
@@ -26,7 +28,7 @@ export const CHAIN_BY_ENV: Record<SupportedEnvironment, ChainConfig> = {
     chainId: 102,
     chainName: 'Sui Testnet',
     network: 'testnet',
-    rpcUrl: process.env.EXPO_PUBLIC_SUI_TESTNET_RPC_URL || 'https://fullnode.testnet.sui.io:443',
+    rpcUrl: env.sui.testnetRpcUrl,
     explorerTxUrl: 'https://suiscan.xyz/testnet/tx/',
     nativeCurrency: { name: 'Sui', symbol: 'SUI', decimals: 9 },
   },
@@ -34,7 +36,7 @@ export const CHAIN_BY_ENV: Record<SupportedEnvironment, ChainConfig> = {
     chainId: 101,
     chainName: 'Sui Mainnet',
     network: 'mainnet',
-    rpcUrl: process.env.EXPO_PUBLIC_SUI_MAINNET_RPC_URL || 'https://fullnode.mainnet.sui.io:443',
+    rpcUrl: env.sui.mainnetRpcUrl,
     explorerTxUrl: 'https://suiscan.xyz/mainnet/tx/',
     nativeCurrency: { name: 'Sui', symbol: 'SUI', decimals: 9 },
   },

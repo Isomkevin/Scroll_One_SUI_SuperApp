@@ -76,7 +76,20 @@ For detailed architecture documentation, see [System Overview](./docs/architectu
    bun install
    ```
 
-3. **Start the development server**
+3. **Configure environment**
+
+   ```bash
+   cp .env.example .env
+   # Edit .env if you need custom Sui RPC URLs or API endpoint
+   ```
+
+   For the backend API (optional):
+
+   ```bash
+   cp backend/.env.example backend/.env
+   ```
+
+4. **Start the development server**
 
    ```bash
    # For mobile (iOS/Android)
@@ -179,7 +192,7 @@ For detailed security documentation, see [Security Architecture](./docs/security
 ### Backend
 
 - **Production**: Docker deployment with PostgreSQL and Redis
-- **Environment Variables**: Configure via `.env` file
+- **Environment Variables**: Copy `backend/.env.example` to `backend/.env` and configure Sui RPC URLs
 
 ### Landing Page
 

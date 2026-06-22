@@ -1,8 +1,12 @@
-import { formatUnits } from 'ethers';
 import { pool } from '../../config/database';
 import { cacheService } from '../../config/redis';
 import { logger } from '../../config/logger';
 import { suiProvider } from '../blockchain/suiProvider';
+
+function formatTokenUnits(totalBalance: string, decimals: number): string {
+  const value = Number(totalBalance) / 10 ** decimals;
+  return value.toString();
+}
 
 export interface TokenInfo {
   id: string;
@@ -115,7 +119,7 @@ export class TokenService {
       });
       const metadata = await suiProvider.getClient().getCoinMetadata({ coinType });
       const decimals = metadata?.decimals ?? 9;
-      return formatUnits(balance.totalBalance, decimals);
+      return formatTokenUnits(balance.totalBalance, decimals);
     } catch (error) {
       logger.error('Error fetching token balance', error);
       return '0.0';
