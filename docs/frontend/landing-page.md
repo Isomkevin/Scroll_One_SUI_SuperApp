@@ -74,8 +74,9 @@ href="https://apps.apple.com/app/scroll-one-superapp"
 // Google Play Store
 href="https://play.google.com/store/apps/details?id=app.rork.scroll_one_superapp"
 
-// APK Download
-href="/downloads/scroll-one-superapp.apk"
+// APK Download (configured in app/page.tsx)
+const APK_DOWNLOAD_URL =
+  "https://expo.dev/accounts/kevinisom9000/projects/scroll-one-sui-superapp/builds/13c6ee6d-e29f-4a36-a1f1-f2a3c4fddd40";
 ```
 
 **Update Content**:
@@ -142,7 +143,7 @@ vercel
 ### Pre-Deployment Checklist
 
 - [ ] Update download links
-- [ ] Add APK file to `public/downloads/`
+- [x] APK linked via EAS build URL in `app/page.tsx`
 - [ ] Update domain in `robots.txt`
 - [ ] Update sitemap domain
 - [ ] Configure environment variables

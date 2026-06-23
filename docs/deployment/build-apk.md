@@ -71,7 +71,16 @@ npx eas-cli build --platform android --profile production
 
 ### Step 3: Download APK
 
-After the build completes (usually 10-15 minutes), you'll receive a download link. You can also check your builds at: https://expo.dev/accounts/[your-account]/projects/scroll-one-superapp/builds
+After the build completes (usually 10-15 minutes), you'll receive a download link. Check builds at: https://expo.dev/accounts/[your-account]/projects/scroll-one-sui-superapp/builds
+
+### Step 4: Link APK on the landing page
+
+1. Open the finished build on [Expo](https://expo.dev/accounts/kevinisom9000/projects/scroll-one-sui-superapp/builds)
+2. Copy the build page URL (e.g. `https://expo.dev/accounts/.../builds/<build-id>`)
+3. Set `APK_DOWNLOAD_URL` at the top of `landing-page/app/page.tsx`
+4. Redeploy the landing page
+
+Users download the APK from the Expo build page (no need to commit large APK files to git).
 
 ## Troubleshooting
 
@@ -104,16 +113,18 @@ https://developer.android.com/studio/publish/app-signing
 
 ## Current Configuration
 
-- **Package Name**: `app.rork.scroll_one_superapp`
+- **Package Name**: `app.rork.scroll_one_sui_superapp`
+- **EAS Project**: `scroll-one-sui-superapp`
 - **Version**: `1.0.0`
 - **Build Type**: APK (configured in `eas.json`)
 
 ## Next Steps
 
 1. Test the APK on an Android device
-2. For production, set up app signing
-3. Consider using EAS Build for automated builds
-4. Set up CI/CD for automated releases
+2. Update `APK_DOWNLOAD_URL` in `landing-page/app/page.tsx` after each new EAS build
+3. For production, set up app signing
+4. Consider using EAS Build for automated builds
+5. Set up CI/CD for automated releases
 
 ---
 

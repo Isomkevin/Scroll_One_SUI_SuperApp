@@ -83,14 +83,14 @@ href="https://apps.apple.com/app/scroll-one-superapp"
 // Google Play Store link
 href="https://play.google.com/store/apps/details?id=app.rork.scroll_one_superapp"
 
-// APK download link
-href="/downloads/scroll-one-superapp.apk"
+// APK download (see APK_DOWNLOAD_URL in app/page.tsx)
+const APK_DOWNLOAD_URL =
+  "https://expo.dev/accounts/kevinisom9000/projects/scroll-one-sui-superapp/builds/13c6ee6d-e29f-4a36-a1f1-f2a3c4fddd40";
 ```
 
-### 2. Add APK File
+### 2. APK distribution
 
-1. Place your APK in `public/downloads/scroll-one-superapp.apk`
-2. Or update the link to point to your CDN/storage
+Link to the Expo EAS build page instead of hosting the APK in `public/downloads/`. Update `APK_DOWNLOAD_URL` after each new Android build.
 
 ### 3. Update Domain in robots.txt
 

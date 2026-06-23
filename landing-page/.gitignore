@@ -33,3 +33,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Large APK binaries — use EAS build links on the landing page instead
+public/downloads/*.apk

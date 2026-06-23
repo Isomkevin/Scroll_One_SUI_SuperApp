@@ -187,7 +187,7 @@ For detailed security documentation, see [Security Architecture](./docs/security
 
 - **iOS App Store**: Build with EAS Build, submit via EAS Submit
 - **Google Play Store**: Build with EAS Build, submit via EAS Submit
-- **APK**: See [Build APK Guide](./docs/deployment/build-apk.md) for local build instructions
+- **APK**: EAS Build (preview profile); landing page links to the [Expo build page](https://expo.dev/accounts/kevinisom9000/projects/scroll-one-sui-superapp/builds/13c6ee6d-e29f-4a36-a1f1-f2a3c4fddd40)
 
 ### Backend
 
@@ -197,6 +197,7 @@ For detailed security documentation, see [Security Architecture](./docs/security
 ### Landing Page
 
 - **Vercel**: Automatic deployments via GitHub integration
+- **Android APK**: Linked from Expo EAS (`APK_DOWNLOAD_URL` in `landing-page/app/page.tsx`)
 
 For detailed deployment instructions, see [Deployment Guide](./docs/deployment/environments.md).
 

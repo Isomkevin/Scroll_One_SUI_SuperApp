@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import Image from "next/image";
-import { 
+import {
   Wallet, 
   Shield, 
   Zap, 
@@ -44,6 +44,15 @@ import {
 import { useEffect, useState, useRef } from "react";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import Team from "@/components/ui/team";
+
+/** Android APK hosted on EAS (update when publishing a new build). */
+const APK_DOWNLOAD_URL =
+  "https://expo.dev/accounts/kevinisom9000/projects/scroll-one-sui-superapp/builds/13c6ee6d-e29f-4a36-a1f1-f2a3c4fddd40";
+const APK_LINK_LABEL = "Download from Expo";
+const APK_EXTERNAL_LINK_PROPS = {
+  target: "_blank",
+  rel: "noopener noreferrer",
+} as const;
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
@@ -327,15 +336,22 @@ export default function Home() {
                 FAQ
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent-primary group-hover:w-full transition-all duration-300"></span>
               </a>
-              <motion.div
-                className="px-6 py-2.5 bg-background-secondary/50 text-text-secondary rounded-lg font-semibold text-sm relative overflow-hidden group border border-border-subtle cursor-not-allowed"
-                title="Launching Soon - We're putting on the final touches"
+              <a href="#download" className="text-text-secondary hover:text-accent-primary transition-colors font-medium text-sm relative group">
+                Download
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent-primary group-hover:w-full transition-all duration-300"></span>
+              </a>
+              <motion.a
+                href={APK_DOWNLOAD_URL}
+                {...APK_EXTERNAL_LINK_PROPS}
+                className="px-6 py-2.5 bg-gradient-to-r from-accent-primary to-accent-secondary text-white rounded-lg font-semibold text-sm relative overflow-hidden group"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <span className="relative z-10 flex items-center gap-2">
-                  <span>Launching Soon</span>
-                  <Sparkles className="w-3 h-3 text-accent-primary" />
+                  <Download className="w-4 h-4" />
+                  <span>Get APK</span>
                 </span>
-              </motion.div>
+              </motion.a>
             </motion.div>
 
             <button
@@ -361,7 +377,8 @@ export default function Home() {
               <a href="/developers" className="text-text-secondary hover:text-accent-primary transition-colors" onClick={() => setMobileMenuOpen(false)}>Developers</a>
               <a href="#about" className="text-text-secondary hover:text-accent-primary transition-colors" onClick={() => setMobileMenuOpen(false)}>About</a>
               <a href="#faq" className="text-text-secondary hover:text-accent-primary transition-colors" onClick={() => setMobileMenuOpen(false)}>FAQ</a>
-              <a href="#download" className="text-text-secondary hover:text-accent-primary transition-colors" onClick={() => setMobileMenuOpen(false)}>Coming Soon</a>
+              <a href="#download" className="text-text-secondary hover:text-accent-primary transition-colors" onClick={() => setMobileMenuOpen(false)}>Download</a>
+              <a href={APK_DOWNLOAD_URL} {...APK_EXTERNAL_LINK_PROPS} className="text-accent-primary font-semibold" onClick={() => setMobileMenuOpen(false)}>Get APK</a>
             </div>
           </motion.div>
         )}
@@ -956,14 +973,14 @@ export default function Home() {
               <div className="h-px w-20 bg-gradient-to-r from-accent-primary to-transparent"></div>
             </div>
             <h2 className="text-5xl md:text-7xl font-black mb-6">
-              Almost <span className="gradient-text">here</span>
+              Get the <span className="gradient-text">app</span>
             </h2>
             <p className="text-xl text-text-secondary max-w-2xl mx-auto mb-4">
-              We're putting on the final touches
+              Android APK preview is available now. iOS and Google Play coming soon.
             </p>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-accent-primary/30 text-accent-primary text-sm font-semibold mb-6 backdrop-blur-xl">
               <Sparkles className="w-4 h-4" />
-              <span>Currently in active development</span>
+              <span>v1 preview build — Sui testnet recommended</span>
             </div>
           </motion.div>
 
@@ -974,51 +991,78 @@ export default function Home() {
                 icon: Apple,
                 gradient: "from-gray-800 to-gray-900",
                 description: "App Store",
-                status: "Coming Soon"
+                status: "Coming Soon",
+                href: undefined,
               },
               {
                 platform: "Android",
                 icon: Play,
                 gradient: "from-green-600 to-green-700",
                 description: "Google Play",
-                status: "Coming Soon"
+                status: "Coming Soon",
+                href: undefined,
               },
               {
                 platform: "APK",
                 icon: Package,
                 gradient: "from-scroll to-scroll-dark",
-                description: "Direct Download",
-                status: "Coming Soon"
+                description: "Expo EAS Build",
+                status: "Available",
+                href: APK_DOWNLOAD_URL,
+                external: true,
               },
-            ].map((item, index) => (
-              <motion.div
+            ].map((item, index) => {
+              const isAvailable = Boolean(item.href);
+              const CardWrapper = isAvailable ? motion.a : motion.div;
+              const cardProps = isAvailable
+                ? {
+                    href: item.href,
+                    ...(item.external ? APK_EXTERNAL_LINK_PROPS : {}),
+                  }
+                : {};
+
+              return (
+              <CardWrapper
                 key={index}
+                {...cardProps}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="group relative glass rounded-3xl p-10 text-center border border-border-subtle backdrop-blur-xl overflow-hidden cursor-not-allowed opacity-75"
-                title={`${item.platform} - ${item.status}`}
+                whileHover={isAvailable ? { scale: 1.02 } : undefined}
+                className={`group relative glass rounded-3xl p-10 text-center border border-border-subtle backdrop-blur-xl overflow-hidden ${
+                  isAvailable
+                    ? "cursor-pointer hover:border-accent-primary/40"
+                    : "cursor-not-allowed opacity-75"
+                }`}
+                title={isAvailable ? `Download ${item.platform}` : `${item.platform} - ${item.status}`}
               >
                 <motion.div
                   className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-5`}
                 />
                 <motion.div
-                  className={`w-20 h-20 bg-gradient-to-br ${item.gradient} rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl relative z-10 opacity-60`}
+                  className={`w-20 h-20 bg-gradient-to-br ${item.gradient} rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl relative z-10 ${
+                    isAvailable ? "" : "opacity-60"
+                  }`}
                 >
                   <item.icon className="w-10 h-10 text-white" />
                 </motion.div>
                 <h3 className="text-2xl font-bold mb-2 text-text-primary relative z-10">{item.platform}</h3>
                 <p className="text-text-secondary mb-4 relative z-10">{item.description}</p>
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-background-secondary/50 border border-border-subtle mb-4 relative z-10">
-                  <span className="text-xs font-semibold text-text-tertiary">{item.status}</span>
+                  <span className={`text-xs font-semibold ${isAvailable ? "text-accent-primary" : "text-text-tertiary"}`}>
+                    {item.status}
+                  </span>
                 </div>
-                <div className="flex items-center justify-center space-x-2 text-text-tertiary font-semibold relative z-10">
+                <div className={`flex items-center justify-center space-x-2 font-semibold relative z-10 ${
+                  isAvailable ? "text-accent-primary" : "text-text-tertiary"
+                }`}>
                   <Download className="w-5 h-5" />
-                  <span>Unavailable</span>
+                  <span>{isAvailable ? (item.external ? "Open on Expo" : "Download APK") : "Unavailable"}</span>
                 </div>
-              </motion.div>
-            ))}
+              </CardWrapper>
+            );
+            })}
           </div>
 
           <motion.div
@@ -1028,11 +1072,13 @@ export default function Home() {
             className="text-center space-y-4"
           >
             <div className="inline-flex items-center gap-3 glass rounded-full px-6 py-3 border border-accent-primary/30 backdrop-blur-xl">
-              <Sparkles className="w-4 h-4 text-accent-primary" />
-              <span className="text-text-secondary font-semibold text-sm">Join the waitlist to be notified when we launch</span>
+              <Download className="w-4 h-4 text-accent-primary" />
+              <a href={APK_DOWNLOAD_URL} {...APK_EXTERNAL_LINK_PROPS} className="text-text-secondary font-semibold text-sm hover:text-accent-primary transition-colors">
+                {APK_LINK_LABEL}
+              </a>
             </div>
             <p className="text-text-tertiary text-sm max-w-md mx-auto">
-              We're working hard to deliver the best experience. Sign up for our newsletter to get early access.
+              Opens the Expo build page to download the Android APK. Enable &quot;Install from unknown sources&quot; on Android to sideload.
             </p>
           </motion.div>
         </div>
@@ -1362,7 +1408,7 @@ export default function Home() {
               <ul className="space-y-3 text-sm text-text-secondary">
                 <li><a href="#features" className="hover:text-accent-primary transition-colors">Features</a></li>
                 <li><a href="#ecosystem" className="hover:text-accent-primary transition-colors">Ecosystem</a></li>
-                <li><a href="#download" className="hover:text-accent-primary transition-colors">Coming Soon</a></li>
+                <li><a href={APK_DOWNLOAD_URL} {...APK_EXTERNAL_LINK_PROPS} className="hover:text-accent-primary transition-colors">Download APK</a></li>
               </ul>
             </div>
             <div>

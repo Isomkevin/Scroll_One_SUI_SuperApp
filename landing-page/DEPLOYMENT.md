@@ -62,23 +62,16 @@ vercel
 
 ### 1. Update Download Links
 
-Edit `app/page.tsx` and update:
+The APK path is defined at the top of `app/page.tsx`:
 
 ```tsx
-// iOS App Store link (line ~280)
-href="https://apps.apple.com/app/scroll-one-superapp"
-
-// Google Play Store link (line ~300)
-href="https://play.google.com/store/apps/details?id=app.rork.scroll_one_superapp"
-
-// APK download link (line ~320)
-href="/downloads/scroll-one-superapp.apk"
+const APK_DOWNLOAD_URL =
+  "https://expo.dev/accounts/kevinisom9000/projects/scroll-one-sui-superapp/builds/13c6ee6d-e29f-4a36-a1f1-f2a3c4fddd40";
 ```
 
-### 2. Add APK File
+### 2. APK distribution
 
-1. Place your APK in `public/downloads/scroll-one-superapp.apk`
-2. Or update the link to point to your CDN/storage
+APKs are distributed via **Expo EAS** build pages (not `public/downloads/`). After each new build, update `APK_DOWNLOAD_URL` in `app/page.tsx`.
 
 ### 3. Update Domain in robots.txt
 

@@ -1,1 +1,2 @@
-# Place your APK file here as scroll-one-superapp.apk
+# APKs are distributed via Expo EAS — see APK_DOWNLOAD_URL in landing-page/app/page.tsx
+# Optional: place local copies here for manual testing only (not deployed)

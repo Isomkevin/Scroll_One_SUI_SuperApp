@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://scrollone.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sui.scrollone.app';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const currentDate = new Date();

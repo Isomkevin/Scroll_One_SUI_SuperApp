@@ -75,11 +75,15 @@ vercel
 
 ### Update Download Links
 
-Edit `app/page.tsx` and update the download links:
+The APK download is configured in `app/page.tsx` via `APK_DOWNLOAD_URL` (EAS build page — no local APK hosting).
 
-- **iOS App Store**: Update the `href` in the iOS download card
-- **Google Play Store**: Update the `href` in the Android download card
-- **APK Download**: Update the `href` in the APK download card (or upload APK to `/public/downloads/`)
+- **iOS App Store**: Update the `href` in the iOS download card (when available)
+- **Google Play Store**: Update the `href` in the Android download card (when available)
+- **APK Download**: Update `APK_DOWNLOAD_URL` when you publish a new EAS build
+
+Current APK (v1 preview):
+
+- **EAS build**: [scroll-one-sui-superapp build](https://expo.dev/accounts/kevinisom9000/projects/scroll-one-sui-superapp/builds/13c6ee6d-e29f-4a36-a1f1-f2a3c4fddd40)
 
 ### Update Content
 
@@ -151,16 +155,21 @@ The landing page includes a hidden Super Admin Dashboard accessible at `/admin-s
 
 Before deploying, make sure to update:
 
-1. **App Store Link**: `https://apps.apple.com/app/scroll-one-superapp`
-2. **Play Store Link**: `https://play.google.com/store/apps/details?id=app.rork.scroll_one_superapp`
-3. **APK Download Path**: `/downloads/scroll-one-superapp.apk` (upload APK to `public/downloads/`)
+1. **App Store Link**: `https://apps.apple.com/app/scroll-one-superapp` (coming soon)
+2. **Play Store Link**: `https://play.google.com/store/apps/details?id=app.rork.scroll_one_sui_superapp` (coming soon)
+3. **APK Download**: EAS build page (see `APK_DOWNLOAD_URL` in `app/page.tsx`)
 4. **Footer Links**: Update documentation, support, and legal links
 
-## 📱 Adding APK Download
+## 📱 APK Download
 
-1. Create `public/downloads/` directory
-2. Place your APK file as `scroll-one-superapp.apk`
-3. The download link will automatically work
+The Android preview APK is linked from Expo EAS (not bundled in the site):
+
+1. Build with EAS: `npx eas-cli build --platform android --profile preview`
+2. Copy the build page URL from [Expo](https://expo.dev/accounts/kevinisom9000/projects/scroll-one-sui-superapp/builds)
+3. Update `APK_DOWNLOAD_URL` at the top of `app/page.tsx`
+4. Redeploy the landing page
+
+**Why EAS?** APK files are large; linking to Expo avoids bloating the repo and deploy size.
 
 ## 🌐 SEO
 
